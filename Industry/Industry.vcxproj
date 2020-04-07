@@ -144,15 +144,54 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BasicShader.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Display.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Evt_Display.cpp" />
     <ClCompile Include="Evt_Keyboard.cpp" />
     <ClCompile Include="Evt_Mouse.cpp" />
+    <ClCompile Include="GameDisplay.cpp" />
+    <ClCompile Include="GBuffer.cpp" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="LightShader.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="PostProcessor.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicShader.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Display.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Evt_Display.h" />
     <ClInclude Include="Evt_Keyboard.h" />
     <ClInclude Include="Evt_Mouse.h" />
+    <ClInclude Include="GameDisplay.h" />
+    <ClInclude Include="GBuffer.h" />
+    <ClInclude Include="Image.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="LightShader.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="PostProcessor.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Transform.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\basicShader.fs" />
+    <None Include="shaders\basicShader.vs" />
+    <None Include="shaders\gBuffer.fs" />
+    <None Include="shaders\gBuffer.vs" />
+    <None Include="shaders\lightShader.fs" />
+    <None Include="shaders\lightShader.vs" />
+    <None Include="shaders\postShader.fs" />
+    <None Include="shaders\postShader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

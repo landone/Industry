@@ -1,32 +1,148 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Header Files">
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{010940ee-40f4-452f-9972-fb2919c9c2dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Display.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Evt_Keyboard.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Evt_Mouse.cpp">
-      <Filter>Header Files</Filter>
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="LightShader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessor.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicShader.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Evt_Display.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GameDisplay.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="GBuffer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Evt_Keyboard.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Evt_Mouse.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="GBuffer.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="LightShader.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessor.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicShader.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Evt_Display.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDisplay.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Image.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\basicShader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\basicShader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\gBuffer.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\gBuffer.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\lightShader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\lightShader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\postShader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\postShader.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
