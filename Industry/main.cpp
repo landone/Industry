@@ -4,6 +4,7 @@
 #include "Evt_Display.h"
 #include "GameDisplay.h"
 #include "Camera.h"
+#include "Image.h"
 
 int main() {
 
@@ -16,8 +17,13 @@ int main() {
 	Camera* cam = Camera::create();
 	Camera* guiCam = Camera::create();
 
+	display.setAmbientColor(0, 0.5, 1);
+	Texture tex("textures/missing.png");
+	Image image(tex);
+
 	while (display.isOpen()) {
 
+		/* Frame updates */
 		thisFrame = clock();
 		Evt_Display::sendFrame((double)(thisFrame - lastFrame) / 1000.0);
 		lastFrame = thisFrame;
@@ -44,6 +50,7 @@ int main() {
 		display.postProcessor.bind();
 		display.postProcessor.drawQuad();
 
+		/* Swap buffers */
 		display.update();
 
 	}
