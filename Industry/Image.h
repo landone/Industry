@@ -8,15 +8,15 @@ public:
 
 	Image(Texture);
 
-	void onDrawGUI(GBuffer&) override;
-
 	void setRelPos(float x, float y);
 	void setAbsPos(float x, float y);
 
 	void setRelSize(float x, float y);
 	void setAbsSize(float x, float y);
 
-private:
+protected:
+
+	void onDrawGUI(GBuffer&) override;
 
 	void calcTrans();
 	bool changed = false;

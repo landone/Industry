@@ -62,6 +62,9 @@
     <ClCompile Include="Image.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.h">
@@ -116,6 +119,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Image.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

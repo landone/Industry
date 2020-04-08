@@ -5,6 +5,11 @@
 #include "GameDisplay.h"
 #include "Camera.h"
 #include "Image.h"
+#include "Button.h"
+
+void OnButton() {
+	std::cout << "Pressed\n";
+}
 
 int main() {
 
@@ -19,7 +24,9 @@ int main() {
 
 	display.setAmbientColor(0, 0.5, 1);
 	Texture tex("textures/missing.png");
-	Image image(tex);
+	Button btn(tex);
+	btn.setRelSize(0.4, 0.4);
+	btn.setCallback(OnButton);
 
 	while (display.isOpen()) {
 

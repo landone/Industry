@@ -9,10 +9,14 @@ public:
 	DisplayListener(const DisplayListener&);
 	~DisplayListener();
 
+private:
+
 	virtual void onFrame(double delta) {}
 	virtual void onDrawGUI(GBuffer& gBuffer) {}
 	virtual void onDraw3DGUI(GBuffer& gBuffer) {}
 	virtual void onDrawGeometry(GBuffer& gBuffer) {}
+
+	friend class Evt_Display;
 
 };
 

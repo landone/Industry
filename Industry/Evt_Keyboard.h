@@ -16,12 +16,16 @@ public:
 
 	KeyboardListener();
 	~KeyboardListener();
+
+private:
 	
 	virtual void onKeyPress(KEY key) {}
 	virtual void onKeyRelease(KEY key){}
 
-private:
 	std::vector<KeyboardListener*>& listeners;
+
+	friend class Evt_Keyboard;
+
 };
 
 class Evt_Keyboard {
