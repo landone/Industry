@@ -7,8 +7,10 @@
 #include "Image.h"
 #include "Button.h"
 
+Display* g_display = nullptr;
+
 void OnButton() {
-	std::cout << "Pressed\n";
+	g_display->setSize(g_display->getSize() + glm::vec2(10,10));
 }
 
 int main() {
@@ -23,6 +25,7 @@ int main() {
 	Camera* guiCam = Camera::create();
 
 	display.setAmbientColor(0, 0.5, 1);
+	g_display = &display;
 	Texture tex("textures/missing.png");
 	Button btn(tex);
 	btn.setRelSize(0.4, 0.4);

@@ -6,7 +6,7 @@ public:
 	MouseListener();
 	~MouseListener();
 
-private:
+protected:
 
 	virtual void onMouseMotion(double x, double y) {}
 	virtual void onMousePress(int button, int x, int y) {}

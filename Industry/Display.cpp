@@ -5,28 +5,18 @@
 #include "GL/glew.h"
 #include "Evt_Keyboard.h"
 #include "Evt_Mouse.h"
+#include "Evt_Display.h"
+#include "Image.h"
 
 const static int DEFAULT_WIDTH = 1280;
 const static int DEFAULT_HEIGHT = 720;
 const static std::string DEFAULT_TITLE = "<|DEFAULT WINDOW|>";
 
-Display::Display() {
+Display::Display() : Display(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TITLE) {}
 
-	Display(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TITLE);
+Display::Display(const std::string& title) : Display(DEFAULT_WIDTH, DEFAULT_HEIGHT, title) {}
 
-}
-
-Display::Display(const std::string& title) {
-
-	Display(DEFAULT_WIDTH, DEFAULT_HEIGHT, title);
-
-}
-
-Display::Display(int width, int height) {
-
-	Display(width, height, DEFAULT_TITLE);
-
-}
+Display::Display(int width, int height) : Display(width, height, DEFAULT_TITLE) {}
 
 Display::Display(int width, int height, const std::string& title) {
 	this->width = width;
@@ -86,12 +76,32 @@ void Display::setFullscreen(bool toggle) {
 
 }
 
+void Display::setBorder(bool toggle) {
+
+	SDL_SetWindowBordered(window, (SDL_bool)toggle);
+
+}
+
+void Display::setOpacity(float opacity) {
+
+	SDL_SetWindowOpacity(window, opacity);
+
+}
+
+void Display::setResizable(bool toggle) {
+
+	SDL_SetWindowResizable(window, (SDL_bool)toggle);
+
+}
+
 void Display::setSize(int width, int height) {
 
 	this->width = abs(width);
 	this->height = abs(height);
 	SDL_SetWindowSize(window, width, height);
-	glViewport(0, 0, width, height);
+	/*glViewport(0, 0, width, height);
+	Image::rightViewport = false;
+	Evt_Display::sendResize(width, height);*/
 
 }
 
@@ -147,8 +157,15 @@ void Display::update() {
 				Evt_Mouse::sendMouseRelease(e.button.button - 1, e.button.x, e.button.y);
 			}
 		}
-		else if(e.type == SDL_MOUSEWHEEL){
+		else if (e.type == SDL_MOUSEWHEEL){
 			Evt_Mouse::sendMouseWheel(e.wheel.y);
+		}
+		else if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+			width = e.window.data1;
+			height = e.window.data2;
+			glViewport(0, 0, width, height);
+			Image::rightViewport = false;
+			Evt_Display::sendResize(width, height);
 		}
 	}
 }

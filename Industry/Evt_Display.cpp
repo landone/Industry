@@ -1,7 +1,6 @@
 #include "Evt_Display.h"
 #include <vector>
 #include <algorithm>
-#include <iostream>
 
 static std::vector<DisplayListener*> listeners;
 
@@ -38,5 +37,11 @@ void Evt_Display::sendDraw3DGUI(GBuffer& gBuffer) {
 void Evt_Display::sendDrawGeometry(GBuffer& gBuffer) {
 	for (unsigned int i = 0; i < listeners.size(); i++) {
 		listeners[i]->onDrawGeometry(gBuffer);
+	}
+}
+
+void Evt_Display::sendResize(int x, int y) {
+	for (unsigned int i = 0; i < listeners.size(); i++) {
+		listeners[i]->onResize(x, y);
 	}
 }

@@ -11,12 +11,9 @@ void Button::onMouseRelease(int button, int x, int y) {
 	float point[2];
 	point[0] = x * pxToScr[0] - 1.0f;
 	point[1] = y * -pxToScr[1] + 1.0f;
-	if (changed) {
-		calcTrans();
-	}
-	glm::vec3 pos = trans.GetPos();
-	glm::vec3 scale = trans.GetScale();
-	if ((abs(point[0] - pos.x) < scale.x) && (abs(point[1] - pos.y) < scale.y)) {
+	glm::vec2 pos = getTruePos();
+	glm::vec2 size = getTrueSize();
+	if ((abs(point[0] - pos.x) < size.x) && (abs(point[1] - pos.y) < size.y)) {
 		callback();
 	}
 
