@@ -8,10 +8,11 @@
 #include "Evt_Display.h"
 #include "Image.h"
 
+static Display* globalDisplay = nullptr;
+
 const static int DEFAULT_WIDTH = 1280;
 const static int DEFAULT_HEIGHT = 720;
 const static std::string DEFAULT_TITLE = "<|DEFAULT WINDOW|>";
-glm::vec2 Display::pxToScr;
 
 Display::Display() : Display(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TITLE) {}
 
@@ -20,6 +21,11 @@ Display::Display(const std::string& title) : Display(DEFAULT_WIDTH, DEFAULT_HEIG
 Display::Display(int width, int height) : Display(width, height, DEFAULT_TITLE) {}
 
 Display::Display(int width, int height, const std::string& title) {
+
+	if (!globalDisplay) {
+		globalDisplay = this;
+	}
+
 	this->width = width;
 	this->height = height;
 	pxToScr[0] = 2.0f / width;
@@ -62,9 +68,18 @@ Display::Display(int width, int height, const std::string& title) {
 }
 
 Display::~Display() {
+	if (globalDisplay == this) {
+		globalDisplay = nullptr;
+	}
 	SDL_GL_DeleteContext(glContext);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
+}
+
+Display* Display::getGlobal() {
+
+	return globalDisplay;
+
 }
 
 void Display::setTitle(const std::string& title) {
@@ -94,7 +109,7 @@ void Display::setFullscreen(bool toggle) {
 
 }
 
-bool Display::isFullscren() {
+bool Display::isFullscreen() {
 
 	return (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN);
 

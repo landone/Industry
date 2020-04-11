@@ -113,7 +113,7 @@ void Image::setTint(glm::vec3 color) {
 
 void Image::calcTrans() {
 	
-	glm::vec2 pxToScr = Display::getPixelToScreen();
+	glm::vec2 pxToScr = Display::getGlobal()->getPixelToScreen();
 	trans.SetPos(glm::vec3(relPos[0] + absPos[0] * pxToScr[0], relPos[1] + absPos[1] * pxToScr[1], 0));
 	trans.SetScale(glm::vec3((relSz[0] + absSz[0] * pxToScr[0]) * 0.5f, (relSz[1] + absSz[1] * pxToScr[1]) * 0.5f, 0));
 
