@@ -2,7 +2,6 @@
 
 #include "Texture.h"
 #include "Evt_Display.h"
-#include "Display.h"
 
 class Image : public DisplayListener {
 public:
@@ -45,11 +44,6 @@ protected:
 	Transform trans;
 	Texture tex;
 
-	/* Conversion coefficient for pixels to screen units */
-	static glm::vec2 pxToScr;
-	static bool rightViewport;
-	void checkViewport();
-
 	glm::vec2 relPos;
 	glm::vec2 absPos;
 
@@ -57,8 +51,5 @@ protected:
 	glm::vec2 absSz;
 
 	glm::vec3 tint = glm::vec3(1, 1, 1);
-
-	friend void Display::update();
-	friend void Display::setSize(int,int);
 
 };

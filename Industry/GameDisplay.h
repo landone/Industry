@@ -4,8 +4,9 @@
 #include "GBuffer.h"
 #include "LightShader.h"
 #include "PostProcessor.h"
+#include "Evt_Display.h"
 
-class GameDisplay : public Display {
+class GameDisplay : public Display, DisplayListener {
 public:
 
 	GameDisplay();
@@ -14,7 +15,6 @@ public:
 	GameDisplay(int width, int height, const std::string& title);
 
 	void setAmbientColor(float r, float g, float b, float a = 1.0f);
-	void setSize(int width, int height) override;
 
 	GBuffer gBuffer;
 	LightShader lightShader;
@@ -22,6 +22,6 @@ public:
 
 private:
 
-	void updateDimensions(int w, int h);
+	void onResize(int, int) override;
 
 };

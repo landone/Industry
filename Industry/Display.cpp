@@ -11,6 +11,7 @@
 const static int DEFAULT_WIDTH = 1280;
 const static int DEFAULT_HEIGHT = 720;
 const static std::string DEFAULT_TITLE = "<|DEFAULT WINDOW|>";
+glm::vec2 Display::pxToScr;
 
 Display::Display() : Display(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_TITLE) {}
 
@@ -21,6 +22,8 @@ Display::Display(int width, int height) : Display(width, height, DEFAULT_TITLE) 
 Display::Display(int width, int height, const std::string& title) {
 	this->width = width;
 	this->height = height;
+	pxToScr[0] = 2.0f / width;
+	pxToScr[1] = 2.0f / height;
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -70,9 +73,30 @@ void Display::setTitle(const std::string& title) {
 
 }
 
+void Display::setPosition(int x, int y) {
+
+	SDL_SetWindowPosition(window, x, y);
+
+}
+
 void Display::setFullscreen(bool toggle) {
 
-	SDL_SetWindowFullscreen(window, toggle ? SDL_WINDOW_FULLSCREEN : 0);
+	SDL_DisplayMode DM;
+	SDL_GetCurrentDisplayMode(0, &DM);
+	setSize(DM.w, DM.h);
+	if (toggle) {
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+	}
+	else {
+		SDL_SetWindowFullscreen(window, 0);
+		setPosition(0, 10);
+	}
+
+}
+
+bool Display::isFullscren() {
+
+	return (SDL_GetWindowFlags(window) & SDL_WINDOW_FULLSCREEN);
 
 }
 
@@ -99,9 +123,6 @@ void Display::setSize(int width, int height) {
 	this->width = abs(width);
 	this->height = abs(height);
 	SDL_SetWindowSize(window, width, height);
-	/*glViewport(0, 0, width, height);
-	Image::rightViewport = false;
-	Evt_Display::sendResize(width, height);*/
 
 }
 
@@ -126,6 +147,12 @@ void Display::relativeCursor(bool toggle) {
 void Display::clear(double r, double g, double b, double a) {
 	glClearColor((GLclampf)r, (GLclampf)g, (GLclampf)b, (GLclampf)a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+glm::vec2 Display::getPixelToScreen() {
+
+	return pxToScr;
+
 }
 
 void Display::update() {
@@ -164,7 +191,8 @@ void Display::update() {
 			width = e.window.data1;
 			height = e.window.data2;
 			glViewport(0, 0, width, height);
-			Image::rightViewport = false;
+			pxToScr[0] = 2.0f / width;
+			pxToScr[1] = 2.0f / height;
 			Evt_Display::sendResize(width, height);
 		}
 	}

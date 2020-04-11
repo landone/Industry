@@ -21,6 +21,10 @@ public:
 	int getWidth() { return width; }
 	int getHeight() { return height; }
 	glm::vec2 getSize() { return glm::vec2(width, height); }
+	SDL_Window* getID() { return window; }
+	bool isFullscren();
+	/* Returns ratio of screen units per pixels */
+	static glm::vec2 getPixelToScreen();
 
 	void setBorder(bool);
 	void setTitle(const std::string& title);
@@ -29,6 +33,7 @@ public:
 	void setFullscreen(bool toggle);
 	void setOpacity(float);
 	void setResizable(bool);
+	void setPosition(int, int);
 
 	void center();
 	void hideCursor(bool toggle);
@@ -39,6 +44,7 @@ private:
 
 	int width, height;
 	bool isClosed;
+	static glm::vec2 pxToScr;
 	SDL_GLContext glContext;
 	SDL_Window* window;
 

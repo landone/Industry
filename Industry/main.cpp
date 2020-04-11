@@ -10,7 +10,7 @@
 Display* g_display = nullptr;
 
 void OnButton() {
-	g_display->setSize(g_display->getSize() + glm::vec2(10,10));
+	g_display->setFullscreen(!g_display->isFullscren());
 }
 
 int main() {
@@ -25,10 +25,11 @@ int main() {
 	Camera* guiCam = Camera::create();
 
 	display.setAmbientColor(0, 0.5, 1);
+	display.setResizable(true);
 	g_display = &display;
 	Texture tex("textures/missing.png");
 	Button btn(tex);
-	btn.setRelSize(0.4, 0.4);
+	btn.setRelSize(0.4f, 0.4f);
 	btn.setCallback(OnButton);
 
 	while (display.isOpen()) {

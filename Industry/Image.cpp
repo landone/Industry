@@ -1,12 +1,9 @@
 #include "Image.h"
-
-glm::vec2 Image::pxToScr;
-bool Image::rightViewport = false;
+#include "Display.h"
 
 Image::Image(Texture tex) {
 
 	this->tex = tex;
-	checkViewport();
 
 }
 
@@ -22,30 +19,16 @@ void Image::onDrawGUI(GBuffer& buf) {
 }
 
 void Image::onResize(int x, int y) {
-	checkViewport();
+
 	calcTrans();
-
-}
-
-void Image::checkViewport() {
-
-	if (!rightViewport) {
-		rightViewport = true;
-		GLint viewport[4];
-		glGetIntegerv(GL_VIEWPORT, viewport);
-		pxToScr[0] = 2.0f / viewport[2];
-		pxToScr[1] = 2.0f / viewport[3];
-	}
 
 }
 
 void Image::checkChanged() {
 
 	if (changed) {
-
 		changed = false;
 		calcTrans();
-
 	}
 
 }
@@ -130,6 +113,7 @@ void Image::setTint(glm::vec3 color) {
 
 void Image::calcTrans() {
 	
+	glm::vec2 pxToScr = Display::getPixelToScreen();
 	trans.SetPos(glm::vec3(relPos[0] + absPos[0] * pxToScr[0], relPos[1] + absPos[1] * pxToScr[1], 0));
 	trans.SetScale(glm::vec3((relSz[0] + absSz[0] * pxToScr[0]) * 0.5f, (relSz[1] + absSz[1] * pxToScr[1]) * 0.5f, 0));
 

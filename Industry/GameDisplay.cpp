@@ -7,14 +7,7 @@ void GameDisplay::setAmbientColor(float r, float g, float b, float a) {
 
 }
 
-void GameDisplay::setSize(int w, int h) {
-
-	Display::setSize(w, h);
-	updateDimensions(w, h);
-
-}
-
-void GameDisplay::updateDimensions(int w, int h) {
+void GameDisplay::onResize(int w, int h) {
 
 	gBuffer.updateDimensions(w, h);
 	lightShader.updateDimensions(w, h);
@@ -25,14 +18,14 @@ void GameDisplay::updateDimensions(int w, int h) {
 GameDisplay::GameDisplay(int width, int height, const std::string& title) : Display(width, height, title), 
 gBuffer(), lightShader(gBuffer.getPositionTex(), gBuffer.getNormalTex(), gBuffer.getColorTex()), postProcessor(lightShader.getTex()) {
 
-	updateDimensions(width, height);
+	onResize(width, height);
 
 }
 
 GameDisplay::GameDisplay(int width, int height) : Display(width, height),
 gBuffer(), lightShader(gBuffer.getPositionTex(), gBuffer.getNormalTex(), gBuffer.getColorTex()), postProcessor(lightShader.getTex()) {
 
-	updateDimensions(width, height);
+	onResize(width, height);
 
 }
 
@@ -42,7 +35,7 @@ gBuffer(), lightShader(gBuffer.getPositionTex(), gBuffer.getNormalTex(), gBuffer
 	int width = getWidth();
 	int height = getHeight();
 
-	updateDimensions(width, height);
+	onResize(width, height);
 
 }
 
@@ -52,6 +45,6 @@ gBuffer(), lightShader(gBuffer.getPositionTex(), gBuffer.getNormalTex(), gBuffer
 	int width = getWidth();
 	int height = getHeight();
 
-	updateDimensions(width, height);
+	onResize(width, height);
 
 }

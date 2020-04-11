@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "Display.h"
 
 Button::Button(Texture tex) : Image(tex) {
 
@@ -9,6 +10,7 @@ Button::Button(Texture tex) : Image(tex) {
 void Button::onMouseRelease(int button, int x, int y) {
 
 	float point[2];
+	glm::vec2 pxToScr = Display::getPixelToScreen();
 	point[0] = x * pxToScr[0] - 1.0f;
 	point[1] = y * -pxToScr[1] + 1.0f;
 	glm::vec2 pos = getTruePos();
