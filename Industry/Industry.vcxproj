@@ -152,6 +152,7 @@
     <ClCompile Include="Evt_Display.cpp" />
     <ClCompile Include="Evt_Keyboard.cpp" />
     <ClCompile Include="Evt_Mouse.cpp" />
+    <ClCompile Include="Factory.cpp" />
     <ClCompile Include="GameDisplay.cpp" />
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="Image.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="Evt_Display.h" />
     <ClInclude Include="Evt_Keyboard.h" />
     <ClInclude Include="Evt_Mouse.h" />
+    <ClInclude Include="Factory.h" />
     <ClInclude Include="GameDisplay.h" />
     <ClInclude Include="GBuffer.h" />
     <ClInclude Include="Image.h" />

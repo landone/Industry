@@ -24,10 +24,15 @@ protected:
 class Evt_Display {
 public:
 
-	static void sendFrame(double delta);
+	static void sendFrame();
 	static void sendDrawGUI(GBuffer&);
 	static void sendDrawGeometry(GBuffer&);
 	static void sendDraw3DGUI(GBuffer&);
 	static void sendResize(int x, int y);
+
+private:
+
+	static long long lastFrame;
+	static long long thisFrame;
 
 };

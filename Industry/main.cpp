@@ -6,40 +6,29 @@
 #include "Camera.h"
 #include "Image.h"
 #include "Button.h"
-
-Display* g_display = nullptr;
-
-void OnButton() {
-	
-	//g_display->setFullscreen(!g_display->isFullscreen());
-}
+#include "Factory.h"
 
 int main() {
 
 	srand(clock()); //Enable random number gens
 	
 	GameDisplay display(800, 450, "Industry");
-	long long lastFrame = clock();
-	long long thisFrame = 0;
 
 	Camera cam;
 	Camera guiCam;
 
 	display.setAmbientColor(0, 0.5, 1);
 	display.setResizable(true);
-	g_display = &display;
-	Texture tex("textures/missing.png");
+	/*Texture tex("textures/missing.png");
 	Button btn(tex);
-	btn.setCallback(OnButton);
 	btn.setRelSize(0, 0);
-	btn.setAbsSize(100, 100);
+	btn.setAbsSize(100, 100);*/
+	Factory fact;
 
 	while (display.isOpen()) {
 
-		/* Frame updates */
-		thisFrame = clock();
-		Evt_Display::sendFrame((double)(thisFrame - lastFrame) / 1000.0);
-		lastFrame = thisFrame;
+		/* Update frame listeners */
+		Evt_Display::sendFrame();
 
 		/* Draw Geometry */
 		display.gBuffer.bind();
@@ -67,6 +56,7 @@ int main() {
 		display.update();
 
 	}
+
 	return 0;
 
 }

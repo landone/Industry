@@ -51,5 +51,6 @@ protected:
 	glm::vec2 absSz;
 
 	glm::vec3 tint = glm::vec3(1, 1, 1);
+	bool tinted = false;
 
 };

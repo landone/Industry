@@ -11,10 +11,15 @@ void Image::onDrawGUI(GBuffer& buf) {
 
 	checkChanged();
 	tex.bind();
-	buf.setTint(tint);
+	if (tinted) {
+		buf.setTint(tint);
+	}
 	buf.setRotMat(trans.GetRotMatrix());
 	buf.setTransMat(trans.GetMatrix());
 	buf.drawQuad();
+	if (tinted) {
+		buf.setTint(glm::vec3(1, 1, 1));
+	}
 
 }
 
@@ -108,6 +113,7 @@ void Image::setTint(float r, float g, float b) {
 void Image::setTint(glm::vec3 color) {
 
 	tint = color;
+	tinted = (tint != glm::vec3(1, 1, 1));
 
 }
 
