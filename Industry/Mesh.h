@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include <gl/glew.h>
 #include <vector>
+#include <string>
 
 struct Vertex {
 	glm::vec3 position;
@@ -22,6 +23,7 @@ public:
 
 	Mesh& Init(std::vector<Vertex> vertices, std::vector<GLuint> indices);
 	void Init(GLuint VAO, size_t indexSize);
+	void Load(std::string path);
 
 	void draw();
 

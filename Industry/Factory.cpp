@@ -42,7 +42,8 @@ static const std::vector<GLuint> indices{
 
 Factory::Factory() {
 
-	mesh.Init(vertices, indices);
+	//mesh.Init(vertices, indices);
+	mesh.Load("models/DefaultFactory.obj");
 	tex.Load("textures/freeman.png");
 	trans.SetPos(glm::vec3(0, -5, 10));
 
