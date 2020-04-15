@@ -123,33 +123,32 @@ void Mesh::Load(std::string path) {
 			}
 		}
 		else if (line[0] == 'f') {
-			unsigned int ind[9];
-			if (sscanf_s(line.c_str(), "f %d/%d/%d %d/%d/%d %d/%d/%d", &ind[0], &ind[1], &ind[2],
-				&ind[3], &ind[4], &ind[5], &ind[6], &ind[7], &ind[8]) == 9) {
 
-				for (int i = 0; i < 9; i+=3) {
+			size_t start = 1;
+			for (int i = 0; i < 3; i++) {
 
-					std::string v;
-					v += std::to_string(ind[i]);
-					v += '/';
-					v += std::to_string(ind[i + 1]);
-					v += '/';
-					v += std::to_string(ind[i + 2]);
-
-					if (vertMap.find(v) == vertMap.end()) {
-						vertMap[v] = vertCounter++;
-					}
-
-					indices.push_back(vertMap[v]);
-
+				/* Get string representing vertex */
+				start = line.find_first_not_of(' ', start);
+				size_t end = line.find_first_of(' ', start);
+				if (start == std::string::npos || (i < 2 && end == std::string::npos)) {
+					std::cout << "Corrupted model file" << std::endl;
+					return;
 				}
+				std::string v = line.substr(start, end - start);
+				start = end;
+
+				/* Place vertex in map if not found */
+				if (vertMap.find(v) == vertMap.end()) {
+					vertMap[v] = vertCounter++;
+				}
+				indices.push_back(vertMap[v]);
 
 			}
 		}
 
 	}
 	
-	/* Place distinct vertices into array */
+	/* Convert map to array */
 	verts.resize(vertCounter);
 	std::map<std::string, GLuint>::iterator mapIt;
 	for (mapIt = vertMap.begin(); mapIt != vertMap.end(); mapIt++) {

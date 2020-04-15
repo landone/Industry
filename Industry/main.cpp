@@ -19,10 +19,6 @@ int main() {
 
 	display.setAmbientColor(0, 0.5, 1);
 	display.setResizable(true);
-	/*Texture tex("textures/missing.png");
-	Button btn(tex);
-	btn.setRelSize(0, 0);
-	btn.setAbsSize(100, 100);*/
 	Factory fact;
 
 	while (display.isOpen()) {
