@@ -22,22 +22,27 @@ public:
 	}
 
 	Mesh& Init(std::vector<Vertex> vertices, std::vector<GLuint> indices);
-	void Init(GLuint VAO, size_t indexSize);
-	void Load(std::string path);
-
+	bool Load(std::string path);
 	void draw();
 
 	void setTextureScale(glm::vec2 scale);
-
 	void setQuadTextureCoord(glm::vec2 bottomLeft, glm::vec2 topRight);
 
 	GLuint getVAO() { return VAO; }
-	size_t getIndSize() { return indexSize; }
 
 private:
-	GLuint VAO = NULL, VBO = NULL, EBO = NULL;
+
+	struct Object {
+		std::string name;
+		std::vector<GLuint> indices;
+	};
+
+	GLuint VAO = 0;
+	GLuint VBO = 0;
+	GLuint EBO = 0;
 	std::vector<Vertex> vertices;
-	std::vector<GLuint> indices; GLuint indexSize = 0;
+	std::vector<GLuint> indices;
+	std::vector<Object> objects;
 	void setupMesh();
 
 	glm::vec2 textureScale = glm::vec2(1, 1);

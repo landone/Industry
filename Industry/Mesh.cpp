@@ -1,19 +1,12 @@
 #include "Mesh.h"
 #include <fstream>
 #include <map>
-#include <iostream>
 
 Mesh& Mesh::Init(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
 	this->vertices = vertices;
 	this->indices = indices;
-	indexSize = (GLuint)indices.size();
 	setupMesh();
 	return *this;
-}
-
-void Mesh::Init(GLuint vao, size_t indexSize) {
-	this->VAO = vao;
-	this->indexSize = (GLuint)indexSize;
 }
 
 void Mesh::setQuadTextureCoord(glm::vec2 bottomLeft, glm::vec2 topRight) {
@@ -50,6 +43,7 @@ void Mesh::setTextureScale(glm::vec2 scale) {
 }
 
 void Mesh::setupMesh() {
+
 	if (VAO == NULL) {
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
@@ -78,16 +72,19 @@ void Mesh::setupMesh() {
 
 void Mesh::draw() {
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, indexSize, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
 }
 
 Mesh::~Mesh() {
 	glDeleteVertexArrays(1, &VAO);
 }
 
-void Mesh::Load(std::string path) {
+bool Mesh::Load(std::string path) {
 
 	std::ifstream file(path);
+	if (!file.is_open()) {
+		return false;
+	}
 	std::string line;
 
 	std::vector<glm::vec3> pos;
@@ -98,15 +95,25 @@ void Mesh::Load(std::string path) {
 	std::vector<GLuint> indices;
 	GLuint vertCounter = 0;
 	std::map<std::string, GLuint> vertMap;
+
+	Object curObj;
+
 	
 	while (std::getline(file, line)) {
 
+		if (line.size() <= 2) {
+			continue;
+		}
 		if (line[0] == 'v') {
+
 			switch (line[1]) {
 			case 't':
 				glm::vec2 muv;
 				if (sscanf_s(line.c_str(), "vt %f %f", &muv[0], &muv[1]) == 2) {
 					uv.push_back(muv);
+				}
+				else {
+					return false;
 				}
 				break;
 			case 'n':
@@ -114,11 +121,21 @@ void Mesh::Load(std::string path) {
 				if (sscanf_s(line.c_str(), "vn %f %f %f", &mnorm[0], &mnorm[1], &mnorm[2]) == 3) {
 					norm.push_back(mnorm);
 				}
+				else {
+					return false;
+				}
 				break;
 			default:
 				glm::vec3 mpos;
 				if (sscanf_s(line.c_str(), "v %f %f %f", &mpos[0], &mpos[1], &mpos[2]) == 3) {
 					pos.push_back(mpos);
+				}
+				else {
+					return false;
+				}
+				/* Push object position index lower boundary */
+				if (curObj.indices.size() == 0) {
+					curObj.indices.push_back((GLuint)pos.size());
 				}
 			}
 		}
@@ -131,8 +148,7 @@ void Mesh::Load(std::string path) {
 				start = line.find_first_not_of(' ', start);
 				size_t end = line.find_first_of(' ', start);
 				if (start == std::string::npos || (i < 2 && end == std::string::npos)) {
-					std::cout << "Corrupted model file" << std::endl;
-					return;
+					return false;
 				}
 				std::string v = line.substr(start, end - start);
 				start = end;
@@ -145,22 +161,71 @@ void Mesh::Load(std::string path) {
 
 			}
 		}
+		else if (line[0] == 'o') {
+			/* If object initialized, save with upper boundary */
+			if (curObj.indices.size() > 0) {
+				curObj.indices.push_back((GLuint)pos.size());
+				objects.push_back(curObj);
+				curObj.indices.clear();
+			}
+
+			size_t nameStart = line.find_first_not_of(' ', 1);
+			if (nameStart == std::string::npos) {
+				curObj.name = "";
+			}
+			else {
+				curObj.name = line.substr(nameStart, line.size() - nameStart);
+			}
+
+		}
 
 	}
-	
+
+	/* Account for last object */
+	if (curObj.indices.size() > 0) {
+		curObj.indices.push_back((GLuint)pos.size());
+		objects.push_back(curObj);
+	}
+	/* Middleman obj. vertex recorder */
+	std::vector<std::vector<GLuint>> objectVerts;
+	objectVerts.resize(objects.size());
 	/* Convert map to array */
 	verts.resize(vertCounter);
 	std::map<std::string, GLuint>::iterator mapIt;
 	for (mapIt = vertMap.begin(); mapIt != vertMap.end(); mapIt++) {
 		unsigned int ind[3];
-		sscanf_s(mapIt->first.c_str(), "%d/%d/%d", &ind[0], &ind[1], &ind[2]);
+		if (sscanf_s(mapIt->first.c_str(), "%d/%d/%d", &ind[0], &ind[1], &ind[2]) != 3) {
+			return false;
+		}
+		/* Convert object indices from position to vertex */
+		for (unsigned int i = 0; i < objects.size(); i++) {
+			if (ind[0] >= objects[i].indices[0] && ind[0] <= objects[i].indices[1]) {
+				objectVerts[i].push_back(mapIt->second);
+				break;
+			}
+		}
+		/* Translate indices to 0-based */
+		ind[0]--;
+		ind[1]--;
+		ind[2]--;
+		/* Avoid crash due to bad input */
+		if ((ind[0] < 0 || ind[0] >= pos.size()) || (ind[1] < 0 || ind[1] >= uv.size()) || (ind[2] < 0 || ind[2] >= norm.size())) {
+			return false;
+		}
+		/* Place vertex into final vector */
 		Vertex v;
-		v.position = pos[ind[0] - 1];
-		v.texCoord = uv[ind[1] - 1];
-		v.normal = norm[ind[2] - 1];
+		v.position = pos[ind[0]];
+		v.texCoord = uv[ind[1]];
+		v.normal = norm[ind[2]];
 		verts[mapIt->second] = v;
 	}
 
+	/* Overwrite object vertex arrays */
+	for (unsigned int i = 0; i < objects.size(); i++) {
+		objects[i].indices = objectVerts[i];
+	}
+
 	Init(verts, indices);
+	return true;
 
 }
