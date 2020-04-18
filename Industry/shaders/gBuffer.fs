@@ -7,14 +7,15 @@ layout (location = 2) out vec3 gColor;
 in vec2 TexCoords;
 in vec3 FragPos;
 in vec3 Normal;
+flat in int TexID;
 
-uniform sampler2D texMap;
+uniform sampler2D textures[16];
 uniform vec3 tint;
 uniform bool gui;
 
 void main(){
 
-	vec4 origColor = texture(texMap, TexCoords);
+	vec4 origColor = texture(textures[TexID], TexCoords);
 	if(origColor.a < 1){
 		discard;
 	}

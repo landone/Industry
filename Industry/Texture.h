@@ -18,7 +18,7 @@ public:
 
 	static void unloadAll();
 
-	void bind();
+	void bind(GLuint id = 0);
 
 	GLuint getIndex() { return m_texture; }
 	int getWidth() { return width; }

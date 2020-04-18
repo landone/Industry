@@ -6,10 +6,12 @@
 static const std::string DEFAULT_TEXTURE = "./textures/missing.png";
 
 Mesh& Mesh::Init(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
+
 	this->vertices = vertices;
 	this->indices = indices;
 	setupMesh();
 	return *this;
+
 }
 
 void Mesh::setQuadTextureCoord(glm::vec2 bottomLeft, glm::vec2 topRight) {
@@ -70,12 +72,20 @@ void Mesh::setupMesh() {
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
 
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 1, GL_INT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texID));
+
 	glBindVertexArray(0);
 }
 
 void Mesh::draw() {
+
 	glBindVertexArray(VAO);
+	for (unsigned int i = 0; i < textures.size(); i++) {
+		textures[i].bind(i);
+	}
 	glDrawElements(GL_TRIANGLES, (GLsizei)indices.size(), GL_UNSIGNED_INT, 0);
+
 }
 
 Mesh::~Mesh() {
@@ -98,10 +108,12 @@ bool Mesh::Load(std::string path) {
 	std::vector<Vertex> verts;
 	std::vector<GLuint> indices;
 	GLuint vertCounter = 0;
+	/* Map vertex def. to index */
 	std::map<std::string, GLuint> vertMap;
 
 	Object curObj;
-	std::map<std::string, Texture> materials;
+	/* Map material name to texture index */
+	std::map<std::string, GLuint> materials;
 
 	/* Process OBJ data */
 	while (std::getline(file, line)) {
@@ -200,7 +212,8 @@ bool Mesh::Load(std::string path) {
 
 			/* Setup blank object */
 			curObj.indices.clear();
-			curObj.tex.Load(DEFAULT_TEXTURE);
+			curObj.material = DEFAULT_TEXTURE;
+			curObj.texIndex = 0;
 
 			size_t nameStart = line.find_first_not_of(' ', 1);
 			if (nameStart == std::string::npos) {
@@ -214,8 +227,8 @@ bool Mesh::Load(std::string path) {
 		else if (line.substr(0, 6) == "usemtl") {
 
 			std::string name = line.substr(7, line.size() - 7);
-			materials[name].Load(DEFAULT_TEXTURE);
-			curObj.tex.pathway = name;
+			materials[name] = 0;
+			curObj.material = name;
 
 		}
 
@@ -224,8 +237,9 @@ bool Mesh::Load(std::string path) {
 	std::vector<std::pair<std::string, std::string>> mtlData = ProcessMTL(mtlPath);
 	for (unsigned int i = 0; i < mtlData.size(); i++) {
 		if (materials.find(mtlData[i].first) != materials.end()) {
-			/* If material found, load the image file */
-			materials[mtlData[i].first].Load(mtlData[i].second);
+			/* If material found, load the image file and cache */
+			materials[mtlData[i].first] = textures.size();
+			textures.push_back(Texture(mtlData[i].second));
 		}
 	}
 
@@ -265,17 +279,22 @@ bool Mesh::Load(std::string path) {
 		v.position = pos[ind[0]];
 		v.texCoord = uv[ind[1]];
 		v.normal = norm[ind[2]];
+		v.texID = 0;
 		verts[mapIt->second] = v;
 	}
 
 	/* Overwrite object vertex arrays and set textures */
 	for (unsigned int i = 0; i < objects.size(); i++) {
 		objects[i].indices = objectVerts[i];
-		std::string& matName = objects[i].tex.pathway;
+		std::string& matName = objects[i].material;
 		if (materials.find(matName) != materials.end()) {
-			objects[i].tex = materials[matName];
+			objects[i].texIndex = materials[matName];
+			/* Set object's vertices' texture IDs */
+			for (unsigned int j = 0; j < objects[i].indices.size(); j++) {
+				verts[objects[i].indices[j]].texID = objects[i].texIndex;
+			}
 		}
-		std::cout << "Object " << objects[i].name << " texture set to: " << objects[i].tex.pathway << std::endl;
+		std::cout << "Object " << objects[i].name << " texture set to: " << objects[i].material << "(" << objects[i].texIndex << ")" << std::endl;
 	}
 
 	Init(verts, indices);

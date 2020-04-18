@@ -10,6 +10,7 @@ struct Vertex {
 	glm::vec3 position;
 	glm::vec3 normal;
 	glm::vec2 texCoord;
+	GLint texID;
 };
 
 class Mesh {
@@ -35,8 +36,9 @@ private:
 
 	struct Object {
 		std::string name;
+		std::string material;
 		std::vector<GLuint> indices;
-		Texture tex;
+		GLuint texIndex;
 	};
 
 	GLuint VAO = 0;
@@ -45,6 +47,7 @@ private:
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
 	std::vector<Object> objects;
+	std::vector<Texture> textures;
 
 	void setupMesh();
 	/* Read MTL file, return vector of material name paired with pathway */

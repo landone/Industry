@@ -24,6 +24,8 @@ public:
 	
 private:
 
+	static const int MAX_TEXTURES = 16;
+
 	GLuint gBuffer;
 	GLuint gPosition = 0, gNormal = 0, gColorSpec = 0;
 	GLuint gDepth = 0;
@@ -33,7 +35,7 @@ private:
 
 	enum UNIF {
 		TRANS_MAT, ROT_MAT, VIEW_MAT,
-		TEXTURE,
+		TEXTURES,
 		TINT,
 		GUI,
 		TOTAL

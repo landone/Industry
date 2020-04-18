@@ -75,12 +75,13 @@ void GBuffer::configureShader() {
 	bindAttrib("position");
 	bindAttrib("texCoord");
 	bindAttrib("normal");
+	bindAttrib("texID");
 
 	uniforms[UNIF::TRANS_MAT] = createUniform("transMatrix");
 	uniforms[UNIF::ROT_MAT] = createUniform("rotMatrix");
 	uniforms[UNIF::VIEW_MAT] = createUniform("viewMatrix");
 
-	uniforms[UNIF::TEXTURE] = createUniform("texMap");
+	uniforms[UNIF::TEXTURES] = createUniform("textures");
 	uniforms[UNIF::TINT] = createUniform("tint");
 	uniforms[UNIF::GUI] = createUniform("gui");
 
@@ -88,8 +89,14 @@ void GBuffer::configureShader() {
 
 	glm::vec3 defaultVec(1, 1, 1);
 	glUniform3fv(uniforms[UNIF::TINT], 1, &defaultVec[0]);
-	glUniform1i(uniforms[UNIF::TEXTURE], 0);
 	glUniform1i(uniforms[UNIF::GUI], false);
+	/* Initialize sampler2D array uniform */
+	GLint texIDs[MAX_TEXTURES];
+	for (int i = 0; i < MAX_TEXTURES; i++) {
+		texIDs[i] = i;
+	}
+	glUniform1iv(uniforms[UNIF::TEXTURES], MAX_TEXTURES, &texIDs[0]);
+	
 
 }
 
@@ -136,7 +143,7 @@ void GBuffer::initializeBuffer() {
 	
 	static unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
 	glDrawBuffers(3, attachments);
-
+	
 	//For safety, unbind this created buffer
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
