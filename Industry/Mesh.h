@@ -4,6 +4,7 @@
 #include <gl/glew.h>
 #include <vector>
 #include <string>
+#include "Texture.h"
 
 struct Vertex {
 	glm::vec3 position;
@@ -35,6 +36,7 @@ private:
 	struct Object {
 		std::string name;
 		std::vector<GLuint> indices;
+		Texture tex;
 	};
 
 	GLuint VAO = 0;
@@ -43,7 +45,10 @@ private:
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
 	std::vector<Object> objects;
+
 	void setupMesh();
+	/* Read MTL file, return vector of material name paired with pathway */
+	std::vector<std::pair<std::string, std::string>> ProcessMTL(std::string path);
 
 	glm::vec2 textureScale = glm::vec2(1, 1);
 };

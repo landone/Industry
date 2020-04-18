@@ -1,6 +1,9 @@
 #include "Mesh.h"
 #include <fstream>
 #include <map>
+#include <iostream>
+
+static const std::string DEFAULT_TEXTURE = "./textures/missing.png";
 
 Mesh& Mesh::Init(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
 	this->vertices = vertices;
@@ -86,6 +89,7 @@ bool Mesh::Load(std::string path) {
 		return false;
 	}
 	std::string line;
+	std::string mtlPath = path.substr(0, path.find_last_of('.')) + ".mtl";
 
 	std::vector<glm::vec3> pos;
 	std::vector<glm::vec2> uv;
@@ -97,8 +101,9 @@ bool Mesh::Load(std::string path) {
 	std::map<std::string, GLuint> vertMap;
 
 	Object curObj;
+	std::map<std::string, Texture> materials;
 
-	
+	/* Process OBJ data */
 	while (std::getline(file, line)) {
 
 		if (line.size() <= 2) {
@@ -142,22 +147,47 @@ bool Mesh::Load(std::string path) {
 		else if (line[0] == 'f') {
 
 			size_t start = 1;
-			for (int i = 0; i < 3; i++) {
+			GLuint pushedInd[3];
+			for (int i = 0; i < 4; i++) {
 
 				/* Get string representing vertex */
 				start = line.find_first_not_of(' ', start);
 				size_t end = line.find_first_of(' ', start);
-				if (start == std::string::npos || (i < 2 && end == std::string::npos)) {
+				if (i < 2 && end == std::string::npos) {
 					return false;
+				}
+				if (start == std::string::npos) {
+					/* If TRIANGLE face */
+					if (i == 3) {
+						break;
+					}
+					else {
+						/* Otherwise must be corrupted */
+						return false;
+					}
 				}
 				std::string v = line.substr(start, end - start);
 				start = end;
 
+				GLuint index;
 				/* Place vertex in map if not found */
 				if (vertMap.find(v) == vertMap.end()) {
+					index = vertCounter;
 					vertMap[v] = vertCounter++;
 				}
-				indices.push_back(vertMap[v]);
+				else {
+					index = vertMap[v];
+				}
+				/* If QUADRANGLE face*/
+				if (i == 3) {
+					indices.push_back(pushedInd[2]);
+					indices.push_back(index);
+					indices.push_back(pushedInd[0]);
+				}
+				else {
+					pushedInd[i] = index;
+					indices.push_back(index);
+				}
 
 			}
 		}
@@ -166,8 +196,11 @@ bool Mesh::Load(std::string path) {
 			if (curObj.indices.size() > 0) {
 				curObj.indices.push_back((GLuint)pos.size());
 				objects.push_back(curObj);
-				curObj.indices.clear();
 			}
+
+			/* Setup blank object */
+			curObj.indices.clear();
+			curObj.tex.Load(DEFAULT_TEXTURE);
 
 			size_t nameStart = line.find_first_not_of(' ', 1);
 			if (nameStart == std::string::npos) {
@@ -178,7 +211,22 @@ bool Mesh::Load(std::string path) {
 			}
 
 		}
+		else if (line.substr(0, 6) == "usemtl") {
 
+			std::string name = line.substr(7, line.size() - 7);
+			materials[name].Load(DEFAULT_TEXTURE);
+			curObj.tex.pathway = name;
+
+		}
+
+	}
+
+	std::vector<std::pair<std::string, std::string>> mtlData = ProcessMTL(mtlPath);
+	for (unsigned int i = 0; i < mtlData.size(); i++) {
+		if (materials.find(mtlData[i].first) != materials.end()) {
+			/* If material found, load the image file */
+			materials[mtlData[i].first].Load(mtlData[i].second);
+		}
 	}
 
 	/* Account for last object */
@@ -220,12 +268,47 @@ bool Mesh::Load(std::string path) {
 		verts[mapIt->second] = v;
 	}
 
-	/* Overwrite object vertex arrays */
+	/* Overwrite object vertex arrays and set textures */
 	for (unsigned int i = 0; i < objects.size(); i++) {
 		objects[i].indices = objectVerts[i];
+		std::string& matName = objects[i].tex.pathway;
+		if (materials.find(matName) != materials.end()) {
+			objects[i].tex = materials[matName];
+		}
+		std::cout << "Object " << objects[i].name << " texture set to: " << objects[i].tex.pathway << std::endl;
 	}
 
 	Init(verts, indices);
 	return true;
+
+}
+
+std::vector<std::pair<std::string, std::string>> Mesh::ProcessMTL(std::string path) {
+
+	std::vector<std::pair<std::string, std::string>> output;
+
+	std::ifstream file(path);
+	if (!file.is_open()) {
+		return output;
+	}
+	std::string line;
+	/* Current pair being formed */
+	std::pair<std::string, std::string> current;
+
+	while (std::getline(file, line)) {
+
+		if (line.substr(0, 6) == "newmtl") {
+			current.first = line.substr(7, line.size() - 7);
+		}
+		else if (line.substr(0, 6) == "map_Kd") {
+			current.second = line.substr(7, line.size() - 7);
+			output.push_back(current);
+			current.first = "";
+			current.second = "";
+		}
+
+	}
+
+	return output;
 
 }
