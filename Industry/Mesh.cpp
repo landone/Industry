@@ -64,7 +64,7 @@ void Mesh::setupMesh() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position));
 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texCoord));
@@ -73,7 +73,7 @@ void Mesh::setupMesh() {
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
 
 	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 1, GL_INT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texID));
+	glVertexAttribPointer(3, 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, texID));
 
 	glBindVertexArray(0);
 }
@@ -238,7 +238,7 @@ bool Mesh::Load(std::string path) {
 	for (unsigned int i = 0; i < mtlData.size(); i++) {
 		if (materials.find(mtlData[i].first) != materials.end()) {
 			/* If material found, load the image file and cache */
-			materials[mtlData[i].first] = textures.size();
+			materials[mtlData[i].first] = (GLuint)textures.size();
 			textures.push_back(Texture(mtlData[i].second));
 		}
 	}
@@ -291,12 +291,12 @@ bool Mesh::Load(std::string path) {
 			objects[i].texIndex = materials[matName];
 			/* Set object's vertices' texture IDs */
 			for (unsigned int j = 0; j < objects[i].indices.size(); j++) {
-				verts[objects[i].indices[j]].texID = objects[i].texIndex;
+				verts[objects[i].indices[j]].texID = (float)objects[i].texIndex;
 			}
 		}
-		std::cout << "Object " << objects[i].name << " texture set to: " << objects[i].material << "(" << objects[i].texIndex << ")" << std::endl;
+		std::cout << "Object " << objects[i].name << "(" << objects[i].indices.size() << ") texture set to: " << objects[i].material << "(" << objects[i].texIndex << ")" << std::endl;
 	}
-
+	
 	Init(verts, indices);
 	return true;
 

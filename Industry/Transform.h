@@ -27,9 +27,9 @@ public:
 protected:
 private:
 	bool changed = false;
-	glm::vec3 m_pos;
-	glm::vec3 m_rot;
-	glm::vec3 m_scale;
+	glm::vec3 m_pos = glm::vec3(0,0,0);
+	glm::vec3 m_rot = glm::vec3(0, 0, 0);
+	glm::vec3 m_scale = glm::vec3(1, 1, 1);
 	glm::mat4 matrix = glm::mat4(1);
 	glm::mat4 posMatr = glm::mat4(1);
 	glm::mat4 rotMatr = glm::mat4(1);

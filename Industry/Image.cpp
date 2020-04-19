@@ -1,5 +1,6 @@
 #include "Image.h"
 #include "Display.h"
+#include <iostream>
 
 Image::Image(Texture tex) {
 

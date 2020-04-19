@@ -44,11 +44,11 @@ protected:
 	Transform trans;
 	Texture tex;
 
-	glm::vec2 relPos;
-	glm::vec2 absPos;
+	glm::vec2 relPos = glm::vec2(0,0);
+	glm::vec2 absPos = glm::vec2(0,0);
 
 	glm::vec2 relSz = glm::vec2(2, 2);
-	glm::vec2 absSz;
+	glm::vec2 absSz = glm::vec2(0,0);
 
 	glm::vec3 tint = glm::vec3(1, 1, 1);
 	bool tinted = false;

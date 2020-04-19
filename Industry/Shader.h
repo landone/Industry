@@ -19,7 +19,9 @@ public:
 	GLuint getPrgm() { return m_program; }
 
 private:
-	GLuint m_program = NULL, NUM_SHADERS = 3, m_shaders[3];
+	GLuint m_program = 0;
+	GLuint NUM_SHADERS = 3;
+	GLuint m_shaders[3] = { 0 };
 	int attribCount = 0;
 	bool geometry;
 };

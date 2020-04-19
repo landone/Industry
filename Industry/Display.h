@@ -45,7 +45,7 @@ private:
 
 	int width, height;
 	bool isClosed;
-	glm::vec2 pxToScr;
+	glm::vec2 pxToScr = glm::vec2(0, 0);
 	SDL_GLContext glContext;
 	SDL_Window* window;
 

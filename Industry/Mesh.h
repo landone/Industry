@@ -10,7 +10,7 @@ struct Vertex {
 	glm::vec3 position;
 	glm::vec3 normal;
 	glm::vec2 texCoord;
-	GLint texID;
+	float texID;
 };
 
 class Mesh {
@@ -37,6 +37,7 @@ private:
 	struct Object {
 		std::string name;
 		std::string material;
+		/* Indices of owned vertices */
 		std::vector<GLuint> indices;
 		GLuint texIndex;
 	};

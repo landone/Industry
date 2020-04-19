@@ -41,8 +41,9 @@ private:
 	void configureShader();
 	void initializeBuffer();
 
-	GLuint myBuffer, outputTex;
-	GLuint maps[3];
+	GLuint myBuffer = 0;
+	GLuint outputTex = 0;
+	GLuint maps[3] = { 0 };
 
 	std::vector<Light*> lights;
 	std::vector<glm::vec4> lightColor;

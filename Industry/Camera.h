@@ -39,7 +39,10 @@ private:
 
 	float offset = 0.0f;
 	glm::mat4 m_perspective;
-	glm::vec3 m_forward;
-	glm::vec3 m_up;
-	double m_fov, m_aspect, m_znear, m_zfar;
+	glm::vec3 m_forward = glm::vec3(0, 0, 0);
+	glm::vec3 m_up = glm::vec3(0, 0, 0);
+	double m_fov = 0;
+	double m_aspect = 0;
+	double m_znear = 0;
+	double m_zfar = 0;
 };

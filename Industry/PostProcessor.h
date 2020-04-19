@@ -14,7 +14,7 @@ public:
 
 private:
 
-	GLuint preProcMap;
+	GLuint preProcMap = 0;
 	float timeOffset = 0.0;
 
 	enum UNIF {
