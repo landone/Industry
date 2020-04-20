@@ -26,9 +26,12 @@ public:
 
 	glm::vec3& getForward() { return m_forward; }
 	glm::vec3& getUp() { return m_up; }
+	glm::vec2 getRotLimit() { return rotLimit; }
 
 	void rotate(glm::vec3 amt) override;
 	void setRot(glm::vec3 amt) override;
+	/* Set boundary X rotation values*/
+	void setRotLimit(glm::vec2);
 
 	glm::mat4 getViewMatrix();
 
@@ -41,6 +44,7 @@ private:
 	glm::mat4 m_perspective;
 	glm::vec3 m_forward = glm::vec3(0, 0, 0);
 	glm::vec3 m_up = glm::vec3(0, 0, 0);
+	glm::vec2 rotLimit = glm::vec2(-PI / 2.0f, PI / 2.0f);
 	double m_fov = 0;
 	double m_aspect = 0;
 	double m_znear = 0;

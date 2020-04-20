@@ -1,7 +1,6 @@
 #include "Camera.h"
 #include "Display.h"
 
-static const float RIGHT_ANGLE = 1.553343034274953323f;
 static const float DEFAULT_FOV = PI * 140 / 360;
 static const float DEFAULT_NEAR = 0.01f;
 static const float DEFAULT_FAR = 10000;
@@ -43,11 +42,17 @@ void Camera::rotate(glm::vec3 amt) {
 
 void Camera::setRot(glm::vec3 rot) {
 
-	if (rot.x > RIGHT_ANGLE) { rot.x = RIGHT_ANGLE; }
-	if (rot.x < -RIGHT_ANGLE) { rot.x = -RIGHT_ANGLE; }
+	if (rot.x > rotLimit[1]) { rot.x = rotLimit[1]; }
+	if (rot.x < rotLimit[0]) { rot.x = rotLimit[0]; }
 
 	getTransform().SetRot(rot);
 	m_forward = glm::vec3(getTransform().GetRotMatrix() * glm::vec4(0, 0, 1, 1));
+
+}
+
+void Camera::setRotLimit(glm::vec2 bound) {
+
+	rotLimit = bound;
 
 }
 

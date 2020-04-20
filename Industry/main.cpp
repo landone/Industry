@@ -7,6 +7,7 @@
 #include "Image.h"
 #include "Button.h"
 #include "Factory.h"
+#include "GameManager.h"
 
 int main() {
 
@@ -14,7 +15,9 @@ int main() {
 	
 	GameDisplay display(800, 450, "Industry");
 
-	Camera cam;
+	GameManager gameMan;
+
+	Camera& cam = gameMan.getCamera();
 	Camera guiCam;
 
 	display.setAmbientColor(0, 0.5, 1);

@@ -68,6 +68,9 @@
     <ClCompile Include="Factory.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.h">
@@ -128,6 +131,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Factory.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

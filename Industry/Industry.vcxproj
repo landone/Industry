@@ -154,6 +154,7 @@
     <ClCompile Include="Evt_Mouse.cpp" />
     <ClCompile Include="Factory.cpp" />
     <ClCompile Include="GameDisplay.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="LightShader.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="Evt_Mouse.h" />
     <ClInclude Include="Factory.h" />
     <ClInclude Include="GameDisplay.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GBuffer.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Light.h" />

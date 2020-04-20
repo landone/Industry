@@ -3,13 +3,12 @@
 Factory::Factory() {
 
 	mesh.Load("models/DefaultFactory.obj");
-	trans.SetPos(glm::vec3(0, -5, 10));
+	trans.SetPos(glm::vec3(4, 0, -2));
 
 }
 
 void Factory::onDrawGeometry(GBuffer& gbuf) {
 
-	trans.rotate(glm::vec3(0, 0.01, 0));
 	gbuf.setTransMat(trans.GetMatrix());
 	gbuf.setRotMat(trans.GetRotMatrix());
 	mesh.draw();
