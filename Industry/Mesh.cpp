@@ -294,7 +294,7 @@ bool Mesh::Load(std::string path) {
 				verts[objects[i].indices[j]].texID = (float)objects[i].texIndex;
 			}
 		}
-		std::cout << "Object " << objects[i].name << "(" << objects[i].indices.size() << ") texture set to: " << objects[i].material << "(" << objects[i].texIndex << ")" << std::endl;
+	
 	}
 	
 	Init(verts, indices);

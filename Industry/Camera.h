@@ -27,6 +27,7 @@ public:
 	glm::vec3& getForward() { return m_forward; }
 	glm::vec3& getUp() { return m_up; }
 	glm::vec2 getRotLimit() { return rotLimit; }
+	glm::vec3 getOffsetPos() { return getPos() - m_forward * offset; }
 
 	void rotate(glm::vec3 amt) override;
 	void setRot(glm::vec3 amt) override;
@@ -34,6 +35,7 @@ public:
 	void setRotLimit(glm::vec2);
 
 	glm::mat4 getViewMatrix();
+	glm::mat4 getProjectionMatrix() { return m_perspective; }
 
 private:
 

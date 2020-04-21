@@ -66,7 +66,7 @@ void Camera::setOffset(float offset) {
 }
 
 glm::mat4 Camera::getViewMatrix() {
-	glm::vec3 pos = getPos() - m_forward * offset;
+	glm::vec3 pos = getOffsetPos();
 	return m_perspective * glm::lookAt(pos, pos + m_forward * (offset >= 0.0f ? 1.0f : -1.0f), m_up);
 }
 
