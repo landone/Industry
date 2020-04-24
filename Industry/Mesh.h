@@ -24,7 +24,7 @@ public:
 	}
 
 	Mesh& Init(std::vector<Vertex> vertices, std::vector<GLuint> indices);
-	bool Load(std::string path);
+	bool Load(std::string path, bool backfaceCull = true);
 	void draw();
 
 	void setTextureScale(glm::vec2 scale);

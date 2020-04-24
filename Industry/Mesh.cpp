@@ -92,7 +92,7 @@ Mesh::~Mesh() {
 	glDeleteVertexArrays(1, &VAO);
 }
 
-bool Mesh::Load(std::string path) {
+bool Mesh::Load(std::string path, bool backfaceCull) {
 
 	std::ifstream file(path);
 	if (!file.is_open()) {
@@ -171,6 +171,12 @@ bool Mesh::Load(std::string path) {
 				if (start == std::string::npos) {
 					/* If TRIANGLE face */
 					if (i == 3) {
+						/* Draw reverse to flip face orientation */
+						if (!backfaceCull) {
+							for (int j = 2; j >= 0; j--) {
+								indices.push_back(pushedInd[j]);
+							}
+						}
 						break;
 					}
 					else {
@@ -195,6 +201,15 @@ bool Mesh::Load(std::string path) {
 					indices.push_back(pushedInd[2]);
 					indices.push_back(index);
 					indices.push_back(pushedInd[0]);
+					/* Draw reverse to flip face orientation */
+					if (!backfaceCull) {
+						for (int j = 2; j >= 0; j--) {
+							indices.push_back(pushedInd[j]);
+						}
+						indices.push_back(pushedInd[0]);
+						indices.push_back(index);
+						indices.push_back(pushedInd[2]);
+					}
 				}
 				else {
 					pushedInd[i] = index;

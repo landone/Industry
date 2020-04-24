@@ -8,7 +8,7 @@ GameManager::GameManager() {
 	cam.setRotLimit(glm::vec2(PI / 180.0f, PI / 2.1f));
 	cam.setOffsetLimit(glm::vec2(4.0f, 16.0f));
 	display = Display::getGlobal();
-	selector.setModel("models/Selector.obj");
+	selector.setModel("models/Selector.obj", false);
 	selector.setVisible(false);
 
 }
@@ -37,6 +37,7 @@ void GameManager::onMousePress(int button, int x, int y) {
 	}
 	else if (button == 1) {
 		middleMouse = true;
+		display->relativeCursor(true);
 	}
 	else if (button == 2) {
 		selector.setVisible(false);
@@ -48,6 +49,7 @@ void GameManager::onMouseRelease(int button, int x, int y) {
 
 	if (button == 1) {
 		middleMouse = false;
+		display->relativeCursor(false);
 	}
 
 }

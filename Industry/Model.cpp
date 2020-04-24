@@ -6,9 +6,9 @@ Model::Model() {
 
 }
 
-bool Model::setModel(std::string path) {
+bool Model::setModel(std::string path, bool backfaceCull) {
 
-	if (!mesh.Load(path)) {
+	if (!mesh.Load(path, backfaceCull)) {
 		return false;
 	}
 	mdlPath = path;

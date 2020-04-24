@@ -21,7 +21,7 @@ void main(){
 	
 	vec3 FragPos = texture(gPosition, TexCoords).rgb;
 	vec3 Normal = texture(gNormal, TexCoords).rgb;
-	vec3 TexColor = texture(gColor, TexCoords).rgb;
+	vec4 TexColor = texture(gColor, TexCoords);
 
 	if(length(FragPos) == 0){
 		outputTex = ambientColor;
@@ -29,7 +29,8 @@ void main(){
 	}
 
 	if(length(Normal) == 0.0){//Presumably a graphic
-		outputTex = vec4(TexColor, length(TexColor));
+		//outputTex = vec4(TexColor, length(TexColor));
+		outputTex = TexColor;
 		return;
 	}
 
@@ -56,6 +57,6 @@ void main(){
 
 	lightTotal = max(lightTotal, vec3(AMBIENT_LIGHT));
 
-	outputTex = vec4(TexColor * lightTotal, 1.0);
+	outputTex = vec4(TexColor.xyz * lightTotal, TexColor.a);
 
 }

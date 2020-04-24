@@ -63,8 +63,8 @@ void main() {
 	/*//PIXELATION EFFECT
 	vec2 bounds = vec2(0.013, 0.013);
 	vec3 color = texture2D(preProcess, vec2(int(texCo.x / bounds.x) * bounds.x, int(texCo.y / bounds.y) * bounds.y)).xyz;
-	FragColor = vec4(color, 1.0);
-	*/
+	FragColor = vec4(color, 1.0);*/
+	
 
 }
 

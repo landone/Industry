@@ -9,7 +9,7 @@ public:
 
 	Model();
 
-	bool setModel(std::string path);
+	bool setModel(std::string path, bool backfaceCull = true);
 	void setVisible(bool);
 
 	std::string getModel() { return mdlPath; }
