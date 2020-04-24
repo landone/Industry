@@ -33,6 +33,7 @@ public:
 	void setRot(glm::vec3 amt) override;
 	/* Set boundary X rotation values*/
 	void setRotLimit(glm::vec2);
+	void setOffsetLimit(glm::vec2);
 
 	glm::mat4 getViewMatrix();
 	glm::mat4 getProjectionMatrix() { return m_perspective; }
@@ -47,6 +48,7 @@ private:
 	glm::vec3 m_forward = glm::vec3(0, 0, 0);
 	glm::vec3 m_up = glm::vec3(0, 0, 0);
 	glm::vec2 rotLimit = glm::vec2(-PI / 2.0f, PI / 2.0f);
+	glm::vec2 offsLimit = glm::vec2(-INFINITY, INFINITY);
 	double m_fov = 0;
 	double m_aspect = 0;
 	double m_znear = 0;

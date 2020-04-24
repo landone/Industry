@@ -56,12 +56,24 @@ void Camera::setRotLimit(glm::vec2 bound) {
 
 }
 
+void Camera::setOffsetLimit(glm::vec2 bound) {
+
+	offsLimit = bound;
+
+}
+
 void Camera::setFOV(double fov) {
 	m_fov = fov;
 	m_perspective = glm::perspective(m_fov, m_aspect, m_znear, m_zfar);
 }
 
 void Camera::setOffset(float offset) {
+	if (offset < offsLimit[0]) {
+		offset = offsLimit[0];
+	}
+	else if(offset > offsLimit[1]) {
+		offset = offsLimit[1];
+	}
 	this->offset = offset;
 }
 

@@ -22,6 +22,30 @@ GLuint Texture::CreateTexture(const std::string &fileName) {
 		std::cout << "Texture file doesn't exist: " << fileName << std::endl;
 		return 0;
 	}
+	/* Flip texture vertically to correct it */
+	for (int i = 0; i < height / 2; i++) {
+		for (int j = 0; j < width; j++) {
+			int invI = height - 1 - i;
+			unsigned char buf;
+
+			buf = imageData[4 * (i * width + j)];
+			imageData[4 * (i * width + j)] = imageData[4 * (invI * width + j)];
+			imageData[4 * (invI * width + j)] = buf;
+
+			buf = imageData[4 * (i * width + j) + 1];
+			imageData[4 * (i * width + j) + 1] = imageData[4 * (invI * width + j) + 1];
+			imageData[4 * (invI * width + j) + 1] = buf;
+
+			buf = imageData[4 * (i * width + j) + 2];
+			imageData[4 * (i * width + j) + 2] = imageData[4 * (invI * width + j) + 2];
+			imageData[4 * (invI * width + j) + 2] = buf;
+
+			buf = imageData[4 * (i * width + j) + 3];
+			imageData[4 * (i * width + j) + 3] = imageData[4 * (invI * width + j) + 3];
+			imageData[4 * (invI * width + j) + 3] = buf;
+		}
+	}
+
 	glGenTextures(1, &result);
 	glBindTexture(GL_TEXTURE_2D, result);
 

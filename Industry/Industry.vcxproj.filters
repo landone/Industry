@@ -71,6 +71,9 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.h">
@@ -134,6 +137,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="GameManager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

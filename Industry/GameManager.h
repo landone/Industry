@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Evt_Mouse.h"
 #include "Display.h"
+#include "Model.h"
 
 class GameManager : public MouseListener {
 public:
@@ -19,6 +20,8 @@ private:
 	void onMouseWheel(double) override;
 
 	glm::vec3 rayPlaneCol(glm::vec3 orig, glm::vec3 dir, glm::vec3 normal, glm::vec3 planePt);
+
+	Model selector;
 
 	Display* display = nullptr;
 	Camera cam;

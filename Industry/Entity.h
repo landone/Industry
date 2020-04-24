@@ -9,9 +9,8 @@ public:
 
 	static Entity* getEntity(int index);
 	static int getEntityCount();
-	static void clearEntities();
 
-	void destroy();//Will delete this memory allocation as well
+	int getIndex() { return id; }
 
 	virtual glm::vec3 getPos() { return trans.GetPos(); }
 	glm::vec3 getRot() { return trans.GetRot(); }
@@ -55,6 +54,7 @@ protected:
 
 private:
 
+	int id;
 	Transform trans;
 
 };

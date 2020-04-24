@@ -61,7 +61,7 @@ void LightShader::removeLight(Light* light) {
 			lights.erase(lights.begin() + i);
 			lightColor.erase(lightColor.begin() + i);
 			lightPos.erase(lightPos.begin() + i);
-			light->destroy();
+			//light->destroy();
 			break;
 
 		}
