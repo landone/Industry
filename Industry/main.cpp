@@ -1,12 +1,6 @@
-#include <iostream>
 #include <time.h>
 
-#include "Evt_Display.h"
 #include "GameDisplay.h"
-#include "Camera.h"
-#include "Image.h"
-#include "Button.h"
-#include "Factory.h"
 #include "GameManager.h"
 
 int main() {
@@ -18,11 +12,10 @@ int main() {
 	GameManager gameMan;
 
 	Camera& cam = gameMan.getCamera();
-	Camera guiCam;
+	Camera& guiCam = gameMan.getGUICamera();
 
 	display.setAmbientColor(0, 0.5, 1);
 	display.setResizable(true);
-	Factory fact;
 
 	while (display.isOpen()) {
 

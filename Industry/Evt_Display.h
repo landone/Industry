@@ -2,12 +2,28 @@
 
 #include "GBuffer.h"
 
+enum GUILayer {
+	GUILayer_None = 0,
+	GUILayer_Back,
+	GUILayer_Middle,
+	GUILayer_Front
+};
+
 class DisplayListener {
 public:
 
 	DisplayListener();
 	DisplayListener(const DisplayListener&);
 	~DisplayListener();
+
+	void setGUILayer(GUILayer);
+	GUILayer getGUILayer() { return layer; }
+
+	struct LayerNode {
+		DisplayListener* obj;
+		LayerNode* prev;
+		LayerNode* next;
+	};
 
 protected:
 
@@ -18,6 +34,13 @@ protected:
 	virtual void onResize(int, int) {}
 
 	friend class Evt_Display;
+
+private:
+
+	LayerNode myNode;
+	GUILayer layer = GUILayer_None;
+	/* Remove self from layer */
+	void removeGUILayer();
 
 };
 

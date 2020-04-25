@@ -5,6 +5,7 @@
 Image::Image(Texture tex) {
 
 	this->tex = tex;
+	setGUILayer(GUILayer_Middle);
 
 }
 
