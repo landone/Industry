@@ -28,6 +28,8 @@ public:
 
 	void setTint(float r, float g, float b);
 	void setTint(glm::vec3);
+	void setTiled(bool);
+	bool getTiled() { return tiled; }
 	glm::vec3 getTint() { return tint; }
 
 protected:
@@ -37,20 +39,25 @@ protected:
 
 	/* Calculate trans values */
 	void calcTrans();
+	/* Calculate texture coords */
+	void calcTex();
 	/* If trans values changed, calculate them */
 	void checkChanged();
 	bool changed = false;
+	bool texChanged = false;
 
+	Mesh mesh;
 	Transform trans;
 	Texture tex;
 
 	glm::vec2 relPos = glm::vec2(0,0);
 	glm::vec2 absPos = glm::vec2(0,0);
 
-	glm::vec2 relSz = glm::vec2(2, 2);
+	glm::vec2 relSz = glm::vec2(1, 1);
 	glm::vec2 absSz = glm::vec2(0,0);
 
 	glm::vec3 tint = glm::vec3(1, 1, 1);
 	bool tinted = false;
+	bool tiled = false;
 
 };

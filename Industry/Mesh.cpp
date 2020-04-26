@@ -14,24 +14,6 @@ Mesh& Mesh::Init(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
 
 }
 
-void Mesh::setQuadTextureCoord(glm::vec2 bottomLeft, glm::vec2 topRight) {
-
-	if (vertices.size() != 4) {//Must be quad
-		return;
-	}
-
-	vertices[0].texCoord = glm::vec2(bottomLeft.x, topRight.y);
-	vertices[1].texCoord = topRight;
-	vertices[2].texCoord = glm::vec2(topRight.x, bottomLeft.y);
-	vertices[3].texCoord = bottomLeft;
-	
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), &vertices[0]);
-	glBindVertexArray(0);
-
-}
-
 void Mesh::setTextureScale(glm::vec2 scale) {
 	textureScale.x = scale.x / textureScale.x;
 	textureScale.y = scale.y / textureScale.y;
@@ -41,10 +23,21 @@ void Mesh::setTextureScale(glm::vec2 scale) {
 	}
 	textureScale = scale;
 
+	updateVertices();
+}
+
+void Mesh::updateVertices() {
+
+	if (VAO == NULL) {
+		/* Mesh not created yet */
+		return;
+	}
+
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), &vertices[0]);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_DYNAMIC_DRAW);
 	glBindVertexArray(0);
+
 }
 
 void Mesh::setupMesh() {

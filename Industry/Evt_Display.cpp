@@ -8,11 +8,11 @@ static DisplayListener::LayerNode* layerHeads[GUILayer_Front] = { nullptr };
 long long Evt_Display::lastFrame = 0;
 long long Evt_Display::thisFrame = 0;
 
-DisplayListener::DisplayListener() {
+DisplayListener::DisplayListener() : myNode{ 0 } {
 	listeners.push_back(this);
 }
 
-DisplayListener::DisplayListener(const DisplayListener& t) {
+DisplayListener::DisplayListener(const DisplayListener& t) : myNode{ 0 } {
 	listeners.push_back(this);
 }
 

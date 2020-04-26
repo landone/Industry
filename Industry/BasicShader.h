@@ -20,7 +20,7 @@ public:
 	void setBuffer(GLuint buf) { buffer = buf; }
 	void setTint(glm::vec3);
 
-	Texture getTex() { return Texture(gTex, width, height); }
+	Texture getTex() { return Texture(gTex, glm::vec2(width, height)); }
 	GLuint createBuffer();
 	GLuint createTex(bool set = true);
 	GLuint getGLTex() { return gTex; }

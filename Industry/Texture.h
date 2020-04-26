@@ -2,33 +2,29 @@
 
 #include <string>
 #include "GL/glew.h"
+#include "glm/vec2.hpp"
 
 class Texture {
 public:
 
 	Texture() {}
 	Texture(std::string path) { Load(path); }
-	Texture(GLuint tex, int w, int h) { m_texture = tex;  width = w; height = h; }
+	Texture(GLuint tex, glm::vec2 d) { m_texture = tex;  dim = d; }
 
 	Texture& Load(const std::string& fileName);
-	
 	void setIndex(GLuint tex) { m_texture = tex; }
-	void setWidth(int w) { width = w; }
-	void setHeight(int h) { height = h; }
-
-	static void unloadAll();
-
 	void bind(GLuint id = 0);
 
 	GLuint getIndex() { return m_texture; }
-	int getWidth() { return width; }
-	int getHeight() { return height; }
+	glm::vec2 getDimensions() { return dim; }
+
+	static void unloadAll();
 
 	std::string pathway;
 private:
 
 	GLuint m_texture = 0;
-	int width = 0, height = 0;
+	glm::vec2 dim = glm::vec2();
 	GLuint CreateTexture(const std::string &fileName);
 	
 };

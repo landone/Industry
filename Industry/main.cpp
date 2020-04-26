@@ -2,7 +2,7 @@
 
 #include "GameDisplay.h"
 #include "GameManager.h"
-
+#include "Image.h"
 int main() {
 
 	srand(clock()); //Enable random number gens
@@ -13,6 +13,10 @@ int main() {
 
 	Camera& cam = gameMan.getCamera();
 	Camera& guiCam = gameMan.getGUICamera();
+
+	Texture tex("textures/freeman.png");
+	Image img(tex);
+	img.setTiled(true);
 
 	display.setAmbientColor(0, 0.5, 1);
 	display.setResizable(true);

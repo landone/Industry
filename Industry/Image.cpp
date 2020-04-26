@@ -2,10 +2,23 @@
 #include "Display.h"
 #include <iostream>
 
+/* Default mesh */
+static const std::vector<Vertex> vertices{
+	Vertex{ glm::vec3(0,0,0),glm::vec3(0, 0, 1),glm::vec2(0,0) },
+	Vertex{ glm::vec3(1,0,0),glm::vec3(0, 0, 1),glm::vec2(1,0) },
+	Vertex{ glm::vec3(1,1,0),glm::vec3(0, 0, 1),glm::vec2(1,1) },
+	Vertex{ glm::vec3(0,1,0),glm::vec3(0, 0, 1),glm::vec2(0,1) }
+};
+static const std::vector<GLuint> indices{
+	0, 1, 2,
+	2, 3, 0
+};
+
 Image::Image(Texture tex) {
 
 	this->tex = tex;
 	setGUILayer(GUILayer_Middle);
+	mesh.Init(vertices, indices);
 
 }
 
@@ -18,16 +31,28 @@ void Image::onDrawGUI(GBuffer& buf) {
 	}
 	buf.setRotMat(trans.GetRotMatrix());
 	buf.setTransMat(trans.GetMatrix());
-	buf.drawQuad();
+	mesh.draw();
 	if (tinted) {
 		buf.setTint(glm::vec3(1, 1, 1));
 	}
 
 }
 
+void Image::setTiled(bool toggle) {
+
+	if (tiled != toggle) {
+		tiled = toggle;
+		texChanged = true;
+	}
+
+}
+
 void Image::onResize(int x, int y) {
 
-	calcTrans();
+	changed = true;
+	if (tiled) {
+		texChanged = true;
+	}
 
 }
 
@@ -36,6 +61,10 @@ void Image::checkChanged() {
 	if (changed) {
 		changed = false;
 		calcTrans();
+	}
+	if (texChanged) {
+		texChanged = false;
+		calcTex();
 	}
 
 }
@@ -123,6 +152,17 @@ void Image::calcTrans() {
 	
 	glm::vec2 pxToScr = Display::getGlobal()->getPixelToScreen();
 	trans.SetPos(glm::vec3(relPos[0] + absPos[0] * pxToScr[0], relPos[1] + absPos[1] * pxToScr[1], 0));
-	trans.SetScale(glm::vec3((relSz[0] + absSz[0] * pxToScr[0]) * 0.5f, (relSz[1] + absSz[1] * pxToScr[1]) * 0.5f, 0));
+	trans.SetScale(glm::vec3(relSz[0] + absSz[0] * pxToScr[0], relSz[1] + absSz[1] * pxToScr[1], 0));
+
+}
+
+void Image::calcTex() {
+
+	glm::vec2 texScale = glm::vec2(1, 1);
+	if (tiled) {
+		glm::vec2 scrSz = tex.getDimensions() * Display::getGlobal()->getPixelToScreen();
+		texScale = glm::vec2(trans.GetScale()) / scrSz;
+	}
+	mesh.setTextureScale(texScale);
 
 }

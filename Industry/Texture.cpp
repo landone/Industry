@@ -3,7 +3,7 @@
 #include <map>
 #include "stb_image.h"
 
-static std::map<std::string, GLuint> globals;
+static std::map<std::string, Texture> globals;
 
 std::string LowerCase(std::string source) {
 	const char* arr = source.c_str();
@@ -17,7 +17,10 @@ std::string LowerCase(std::string source) {
 GLuint Texture::CreateTexture(const std::string &fileName) {
 	int numComp;
 	GLuint result;
+	int width = 0;
+	int height = 0;
 	unsigned char* imageData = stbi_load(fileName.c_str(), &width, &height, &numComp, 4);
+	dim = glm::vec2(width, height);
 	if (imageData == NULL) {
 		std::cout << "Texture file doesn't exist: " << fileName << std::endl;
 		return 0;
@@ -66,18 +69,18 @@ GLuint Texture::CreateTexture(const std::string &fileName) {
 Texture& Texture::Load(const std::string& fileName) {
 	pathway = LowerCase(fileName);
 	if (globals.find(pathway) != globals.end()) {
-		m_texture = globals[pathway];
+		(*this) = globals[pathway];
 	}
 	else {
 		m_texture = CreateTexture(pathway);
-		globals[pathway] = m_texture;
+		globals[pathway] = (*this);
 	}
 	return *this;
 }
 
 void Texture::unloadAll() {
 	for (const auto& pair : globals) {
-		glDeleteTextures(1, &pair.second);
+		glDeleteTextures(1, &pair.second.m_texture);
 	}
 	globals.clear();
 }

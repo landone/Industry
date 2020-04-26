@@ -28,7 +28,9 @@ public:
 	void draw();
 
 	void setTextureScale(glm::vec2 scale);
-	void setQuadTextureCoord(glm::vec2 bottomLeft, glm::vec2 topRight);
+	std::vector<Vertex>& getVertices() { return vertices; }
+	/* Updates GPU with current vertices in memory */
+	void updateVertices();
 
 	GLuint getVAO() { return VAO; }
 
