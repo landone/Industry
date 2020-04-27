@@ -2,8 +2,9 @@
 
 #include "Texture.h"
 #include "Evt_Display.h"
+#include "Evt_Mouse.h"
 
-class Image : public DisplayListener {
+class Image : public DisplayListener, MouseListener {
 public:
 
 	Image(Texture);
@@ -32,10 +33,12 @@ public:
 	bool getTiled() { return tiled; }
 	glm::vec3 getTint() { return tint; }
 
-protected:
+private:
 
 	void onDrawGUI(GBuffer&) override;
 	void onResize(int, int) override;
+	bool onMouseRelease(int, int, int) override;
+	bool onMousePress(int, int, int) override;
 
 	/* Calculate trans values */
 	void calcTrans();

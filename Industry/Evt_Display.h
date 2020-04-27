@@ -17,12 +17,12 @@ public:
 	~DisplayListener();
 
 	void setGUILayer(GUILayer);
-	GUILayer getGUILayer() { return layer; }
+	GUILayer getGUILayer() { return guiLayer; }
 
-	struct LayerNode {
+	struct GUILayerNode {
 		DisplayListener* obj;
-		LayerNode* prev;
-		LayerNode* next;
+		GUILayerNode* prev;
+		GUILayerNode* next;
 	};
 
 protected:
@@ -37,8 +37,8 @@ protected:
 
 private:
 
-	LayerNode myNode;
-	GUILayer layer = GUILayer_None;
+	GUILayerNode myNode;
+	GUILayer guiLayer = GUILayer_None;
 	/* Remove self from layer */
 	void removeGUILayer();
 

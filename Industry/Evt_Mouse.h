@@ -1,21 +1,42 @@
 #pragma once
 
+enum MouseLayer {
+	MouseLayer_None = 0,
+	MouseLayer_Back,
+	MouseLayer_Middle,
+	MouseLayer_Front
+};
+
 class MouseListener {
 public:
 
 	MouseListener();
 	~MouseListener();
 
+	void setMouseLayer(MouseLayer);
+	MouseLayer getMouseLayer() { return layer; }
+
+	struct MouseLayerNode {
+		MouseListener* obj;
+		MouseLayerNode* prev;
+		MouseLayerNode* next;
+	};
+
 protected:
 
-	virtual void onMouseMotion(double x, double y) {}
-	virtual void onMousePress(int button, int x, int y) {}
-	virtual void onMouseRelease(int button, int x, int y){}
-	virtual bool onPreMousePress(int button, int x, int y) { return true; }
-	virtual bool onPreMouseRelease(int button, int x, int y) { return true; }
-	virtual void onMouseWheel(double amount) {}
+	virtual bool onMouseMotion(double x, double y) { return false; }
+	virtual bool onMousePress(int button, int x, int y) { return false; }
+	virtual bool onMouseRelease(int button, int x, int y) { return false; }
+	virtual bool onMouseWheel(double amount) { return false; }
 
 	friend class Evt_Mouse;
+
+private:
+
+	MouseLayerNode myNode;
+	MouseLayer layer;
+	/* Remove self from layer */
+	void removeMouseLayer();
 
 };
 
@@ -25,8 +46,6 @@ public:
 	static void sendMouseMotion(double xrel, double yrel);
 	static void sendMousePress(int button, int x, int y);
 	static void sendMouseRelease(int button, int x, int y);
-	static bool sendPreMousePress(int button, int x, int y);
-	static bool sendPreMouseRelease(int button, int x, int y);
 	static void sendMouseWheel(double amount);
 
 	static bool isButtonHeld(int button);

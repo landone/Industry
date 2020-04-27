@@ -4,7 +4,7 @@
 #include <time.h>
 
 static std::vector<DisplayListener*> listeners;
-static DisplayListener::LayerNode* layerHeads[GUILayer_Front] = { nullptr };
+static DisplayListener::GUILayerNode* layerHeads[GUILayer_Front] = { nullptr };
 long long Evt_Display::lastFrame = 0;
 long long Evt_Display::thisFrame = 0;
 
@@ -23,16 +23,16 @@ DisplayListener::~DisplayListener() {
 
 void DisplayListener::setGUILayer(GUILayer mLayer) {
 
-	if (mLayer == layer) {
+	if (mLayer == guiLayer) {
 		return;
 	}
 
 	removeGUILayer();
-	layer = mLayer;
+	guiLayer = mLayer;
 
 	/* Append to new list as head */
-	if (layer != GUILayer_None) {
-		int index = (int)layer - 1;
+	if (guiLayer != GUILayer_None) {
+		int index = (int)guiLayer - 1;
 		myNode.obj = this;
 		myNode.next = layerHeads[index];
 		myNode.prev = nullptr;
@@ -47,20 +47,20 @@ void DisplayListener::setGUILayer(GUILayer mLayer) {
 void DisplayListener::removeGUILayer() {
 
 	/* Remove from previous list */
-	if (layer != GUILayer_None) {
+	if (guiLayer != GUILayer_None) {
 		if (myNode.prev) {
 			myNode.prev->next = myNode.next;
 		}
 		else {
 			/* If no prev, we must be head */
-			layerHeads[(int)layer - 1] = myNode.next;
+			layerHeads[(int)guiLayer - 1] = myNode.next;
 		}
 		if (myNode.next) {
 			myNode.next->prev = myNode.prev;
 		}
 	}
 
-	layer = GUILayer_None;
+	guiLayer = GUILayer_None;
 
 }
 
@@ -82,7 +82,7 @@ void Evt_Display::sendFrame() {
 
 void Evt_Display::sendDrawGUI(GBuffer& gBuffer) {
 	for (int i = 0; i < (int)GUILayer_Front; i++) {
-		DisplayListener::LayerNode* node = layerHeads[i];
+		DisplayListener::GUILayerNode* node = layerHeads[i];
 		while (node) {
 			node->obj->onDrawGUI(gBuffer);
 			node = node->next;
@@ -92,7 +92,7 @@ void Evt_Display::sendDrawGUI(GBuffer& gBuffer) {
 
 void Evt_Display::sendDraw3DGUI(GBuffer& gBuffer) {
 	for (int i = 0; i < (int)GUILayer_Front; i++) {
-		DisplayListener::LayerNode* node = layerHeads[i];
+		DisplayListener::GUILayerNode* node = layerHeads[i];
 		while (node) {
 			node->obj->onDraw3DGUI(gBuffer);
 			node = node->next;

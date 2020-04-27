@@ -13,15 +13,17 @@ GameManager::GameManager() {
 
 }
 
-void GameManager::onMouseMotion(double x, double y) {
+bool GameManager::onMouseMotion(double x, double y) {
 
 	if (middleMouse) {
 		cam.rotate(glm::vec3(-y, x, 0) * sensitivity);
 	}
 
+	return false;
+
 }
 
-void GameManager::onMousePress(int button, int x, int y) {
+bool GameManager::onMousePress(int button, int x, int y) {
 
 	if (button == 0) {
 		glm::vec2 pxScr = display->getPixelToScreen();
@@ -43,20 +45,26 @@ void GameManager::onMousePress(int button, int x, int y) {
 		selector.setVisible(false);
 	}
 
+	return false;
+
 }
 
-void GameManager::onMouseRelease(int button, int x, int y) {
+bool GameManager::onMouseRelease(int button, int x, int y) {
 
 	if (button == 1) {
 		middleMouse = false;
 		display->relativeCursor(false);
 	}
 
+	return false;
+
 }
 
-void GameManager::onMouseWheel(double amt) {
+bool GameManager::onMouseWheel(double amt) {
 
-	cam.setOffset(cam.getOffset() - amt);
+	cam.setOffset(cam.getOffset() - (float)amt);
+
+	return false;
 
 }
 

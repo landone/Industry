@@ -1,65 +1,115 @@
 #include "Evt_Mouse.h"
-#include <iostream>
-#include <vector>
-#include <algorithm>
 
-static std::vector<MouseListener*> listeners;
+static MouseListener::MouseLayerNode* layerHeads[MouseLayer_Front] = { nullptr };
 
 static bool buttons[3];
 
 MouseListener::MouseListener() {
-	listeners.push_back(this);
+	setMouseLayer(MouseLayer_Back);
 }
 
 MouseListener::~MouseListener() {
-	listeners.erase(std::remove(listeners.begin(), listeners.end(), this), listeners.end());
+	removeMouseLayer();
+}
+
+void MouseListener::setMouseLayer(MouseLayer mLayer) {
+
+	if (mLayer == layer) {
+		return;
+	}
+
+	removeMouseLayer();
+	layer = mLayer;
+
+	/* Append to new list as head */
+	if (layer != MouseLayer_None) {
+		int index = (int)layer - 1;
+		myNode.obj = this;
+		myNode.next = layerHeads[index];
+		myNode.prev = nullptr;
+		if (layerHeads[index] != nullptr) {
+			layerHeads[index]->prev = &myNode;
+		}
+		layerHeads[index] = &myNode;
+	}
+
+}
+
+void MouseListener::removeMouseLayer() {
+
+	/* Remove from previous list */
+	if (layer != MouseLayer_None) {
+		if (myNode.prev) {
+			myNode.prev->next = myNode.next;
+		}
+		else {
+			/* If no prev, we must be head */
+			layerHeads[(int)layer - 1] = myNode.next;
+		}
+		if (myNode.next) {
+			myNode.next->prev = myNode.prev;
+		}
+	}
+
+	layer = MouseLayer_None;
+
 }
 
 void Evt_Mouse::sendMouseMotion(double xrel, double yrel) {
-	for (unsigned int i = 0; i < listeners.size(); i++) {
-		listeners[i]->onMouseMotion(xrel, yrel);
+	for (int i = (int)MouseLayer_Front - 1; i >= 0; i--) {
+		MouseListener::MouseLayerNode* node = layerHeads[i];
+		bool blocked = false;
+		while (node && !blocked) {
+			blocked = node->obj->onMouseMotion(xrel, yrel);
+			node = node->next;
+		}
+		if (blocked) {
+			break;
+		}
 	}
 }
 
 void Evt_Mouse::sendMousePress(int button, int x, int y) {
 	buttons[button] = true;
-	for (unsigned int i = 0; i < listeners.size(); i++) {
-		listeners[i]->onMousePress(button, x, y);
+	for (int i = (int)MouseLayer_Front - 1; i >= 0; i--) {
+		MouseListener::MouseLayerNode* node = layerHeads[i];
+		bool blocked = false;
+		while (node && !blocked) {
+			blocked = node->obj->onMousePress(button, x, y);
+			node = node->next;
+		}
+		if (blocked) {
+			break;
+		}
 	}
 }
 
 void Evt_Mouse::sendMouseRelease(int button, int x, int y) {
 	buttons[button] = false;
-	for (unsigned int i = 0; i < listeners.size(); i++) {
-		listeners[i]->onMouseRelease(button, x, y);
-	}
-}
-
-bool Evt_Mouse::sendPreMousePress(int button, int x, int y) {
-	buttons[button] = true;
-	bool output = true;
-	for (unsigned int i = 0; i < listeners.size(); i++) {
-		if (!listeners[i]->onPreMousePress(button, x, y)) {
-			output = false;
+	for (int i = (int)MouseLayer_Front - 1; i >= 0; i--) {
+		MouseListener::MouseLayerNode* node = layerHeads[i];
+		bool blocked = false;
+		while (node && !blocked) {
+			blocked = node->obj->onMouseRelease(button, x, y);
+			node = node->next;
+		}
+		if (blocked) {
+			break;
 		}
 	}
-	return output;
-}
-
-bool Evt_Mouse::sendPreMouseRelease(int button, int x, int y) {
-	buttons[button] = false;
-	bool output = true;
-	for (unsigned int i = 0; i < listeners.size(); i++) {
-		if (!listeners[i]->onPreMouseRelease(button, x, y)) {
-			output = false;
-		}
-	}
-	return output;
 }
 
 void Evt_Mouse::sendMouseWheel(double amount) {
-	for (unsigned int i = 0; i < listeners.size(); i++) {
-		listeners[i]->onMouseWheel(amount);
+	for (int i = (int)MouseLayer_Front - 1; i >= 0; i--) {
+		MouseListener::MouseLayerNode* node = layerHeads[i];
+		bool blocked = false;
+		while (node && !blocked) {
+			blocked = node->obj->onMouseWheel(amount);
+			node = node->next;
+		}
+		if (blocked) {
+			break;
+		}
 	}
 }
 

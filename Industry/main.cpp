@@ -1,4 +1,5 @@
 #include <time.h>
+#include <iostream>
 
 #include "GameDisplay.h"
 #include "GameManager.h"

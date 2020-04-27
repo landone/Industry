@@ -1,9 +1,8 @@
 #pragma once
 
 #include "Image.h"
-#include "Evt_Mouse.h"
 
-class Button : public Image, MouseListener {
+class Button : public Image {
 public:
 
 	Button(Texture);
@@ -12,7 +11,7 @@ public:
 
 private:
 
-	void onMouseRelease(int, int, int) override;
+	bool onMouseRelease(int, int, int) override;
 
 	void(*callback)() = nullptr;
 

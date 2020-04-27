@@ -190,14 +190,10 @@ void Display::update() {
 			Evt_Mouse::sendMouseMotion(e.motion.xrel, e.motion.yrel);
 		}
 		else if (e.type == SDL_MOUSEBUTTONDOWN) {
-			if (Evt_Mouse::sendPreMousePress(e.button.button - 1, e.button.x, e.button.y)) {
-				Evt_Mouse::sendMousePress(e.button.button - 1, e.button.x, e.button.y);
-			}
+			Evt_Mouse::sendMousePress(e.button.button - 1, e.button.x, e.button.y);
 		}
 		else if (e.type == SDL_MOUSEBUTTONUP) {
-			if (Evt_Mouse::sendPreMouseRelease(e.button.button - 1, e.button.x, e.button.y)) {
-				Evt_Mouse::sendMouseRelease(e.button.button - 1, e.button.x, e.button.y);
-			}
+			Evt_Mouse::sendMouseRelease(e.button.button - 1, e.button.x, e.button.y);
 		}
 		else if (e.type == SDL_MOUSEWHEEL){
 			Evt_Mouse::sendMouseWheel(e.wheel.y);

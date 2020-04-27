@@ -16,10 +16,10 @@ public:
 
 private:
 
-	void onMouseMotion(double, double) override;
-	void onMousePress(int button, int x, int y) override;
-	void onMouseRelease(int button, int x, int y) override;
-	void onMouseWheel(double) override;
+	bool onMouseMotion(double, double) override;
+	bool onMousePress(int button, int x, int y) override;
+	bool onMouseRelease(int button, int x, int y) override;
+	bool onMouseWheel(double) override;
 
 	glm::vec3 rayPlaneCol(glm::vec3 orig, glm::vec3 dir, glm::vec3 normal, glm::vec3 planePt);
 

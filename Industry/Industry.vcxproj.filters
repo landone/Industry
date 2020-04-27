@@ -168,5 +168,6 @@
     <None Include="shaders\postShader.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
