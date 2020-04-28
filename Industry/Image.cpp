@@ -1,6 +1,7 @@
 #include "Image.h"
 #include "Display.h"
-#include <iostream>
+
+#define DEFAULT_TEXTURE ("textures/missing.png")
 
 /* Default mesh */
 static const std::vector<Vertex> vertices{
@@ -14,12 +15,18 @@ static const std::vector<GLuint> indices{
 	2, 3, 0
 };
 
-Image::Image(Texture tex) {
+Image::Image() {
 
-	this->tex = tex;
+	tex.Load(DEFAULT_TEXTURE);
 	setGUILayer(GUILayer_Middle);
 	setMouseLayer(MouseLayer_Middle);
 	mesh.Init(vertices, indices);
+
+}
+
+Image::Image(Texture tex) : Image() {
+
+	this->tex = tex;
 
 }
 
@@ -86,9 +93,14 @@ void Image::setTiled(bool toggle) {
 
 }
 
+void Image::setTexture(Texture t) {
+
+	tex = t;
+}
+
 void Image::onResize(int x, int y) {
 
-	changed = true;
+	transChanged = true;
 	if (tiled) {
 		texChanged = true;
 	}
@@ -97,8 +109,8 @@ void Image::onResize(int x, int y) {
 
 void Image::checkChanged() {
 
-	if (changed) {
-		changed = false;
+	if (transChanged) {
+		transChanged = false;
 		calcTrans();
 	}
 	if (texChanged) {
@@ -131,7 +143,7 @@ void Image::setRelPos(float x, float y) {
 void Image::setRelPos(glm::vec2 pos) {
 
 	relPos = pos;
-	changed = true;
+	transChanged = true;
 
 }
 
@@ -144,7 +156,7 @@ void Image::setAbsPos(float x, float y) {
 void Image::setAbsPos(glm::vec2 pos) {
 
 	absPos = pos;
-	changed = true;
+	transChanged = true;
 
 }
 
@@ -157,7 +169,7 @@ void Image::setRelSize(float x, float y) {
 void Image::setRelSize(glm::vec2 amt) {
 
 	relSz = amt;
-	changed = true;
+	transChanged = true;
 
 }
 
@@ -170,7 +182,20 @@ void Image::setAbsSize(float x, float y) {
 void Image::setAbsSize(glm::vec2 amt) {
 
 	absSz = amt;
-	changed = true;
+	transChanged = true;
+
+}
+
+void Image::setRelOffset(float x, float y) {
+
+	setRelOffset(glm::vec2(x, y));
+
+}
+
+void Image::setRelOffset(glm::vec2 offset) {
+
+	relOffs = offset;
+	texChanged = true;
 
 }
 
@@ -198,10 +223,11 @@ void Image::calcTrans() {
 void Image::calcTex() {
 
 	glm::vec2 texScale = glm::vec2(1, 1);
+	glm::vec2 pxToScr = Display::getGlobal()->getPixelToScreen();
 	if (tiled) {
-		glm::vec2 scrSz = tex.getDimensions() * Display::getGlobal()->getPixelToScreen();
-		texScale = glm::vec2(trans.GetScale()) / scrSz;
+		texScale = glm::vec2(trans.GetScale()) / (pxToScr * tex.getDimensions());
 	}
 	mesh.setTextureScale(texScale);
+	mesh.setTextureOffset(relOffs);
 
 }

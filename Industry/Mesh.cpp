@@ -18,10 +18,27 @@ void Mesh::setTextureScale(glm::vec2 scale) {
 	textureScale.x = scale.x / textureScale.x;
 	textureScale.y = scale.y / textureScale.y;
 	for (unsigned int i = 0; i < vertices.size(); i++) {
+		vertices[i].texCoord.x -= textureOffs.x;
 		vertices[i].texCoord.x *= textureScale.x;
+		vertices[i].texCoord.x += textureOffs.x;
+
+		vertices[i].texCoord.y -= textureOffs.y;
 		vertices[i].texCoord.y *= textureScale.y;
+		vertices[i].texCoord.y += textureOffs.y;
 	}
 	textureScale = scale;
+
+	updateVertices();
+}
+
+void Mesh::setTextureOffset(glm::vec2 offs) {
+	textureOffs.x = offs.x - textureOffs.x;
+	textureOffs.y = offs.y - textureOffs.y;
+	for (unsigned int i = 0; i < vertices.size(); i++) {
+		vertices[i].texCoord.x += textureOffs.x;
+		vertices[i].texCoord.y += textureOffs.y;
+	}
+	textureOffs = offs;
 
 	updateVertices();
 }

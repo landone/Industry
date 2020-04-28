@@ -27,7 +27,8 @@ public:
 	bool Load(std::string path, bool backfaceCull = true);
 	void draw();
 
-	void setTextureScale(glm::vec2 scale);
+	void setTextureScale(glm::vec2);
+	void setTextureOffset(glm::vec2);
 	std::vector<Vertex>& getVertices() { return vertices; }
 	/* Updates GPU with current vertices in memory */
 	void updateVertices();
@@ -57,4 +58,5 @@ private:
 	std::vector<std::pair<std::string, std::string>> ProcessMTL(std::string path);
 
 	glm::vec2 textureScale = glm::vec2(1, 1);
+	glm::vec2 textureOffs = glm::vec2(0, 0);
 };

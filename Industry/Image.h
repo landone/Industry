@@ -7,6 +7,7 @@
 class Image : public DisplayListener, MouseListener {
 public:
 
+	Image();
 	Image(Texture);
 
 	void setRelPos(float x, float y);
@@ -27,6 +28,12 @@ public:
 	/* Screen size accounting for both relative and absolute */
 	glm::vec2 getTrueSize();
 
+	void setRelOffset(float x, float y);
+	void setRelOffset(glm::vec2);
+	
+	void setTexture(Texture);
+	Texture getTexture() { return tex; }
+
 	void setTint(float r, float g, float b);
 	void setTint(glm::vec3);
 	void setTiled(bool);
@@ -46,7 +53,7 @@ private:
 	void calcTex();
 	/* If trans values changed, calculate them */
 	void checkChanged();
-	bool changed = false;
+	bool transChanged = false;
 	bool texChanged = false;
 
 	Mesh mesh;
@@ -58,6 +65,8 @@ private:
 
 	glm::vec2 relSz = glm::vec2(1, 1);
 	glm::vec2 absSz = glm::vec2(0,0);
+
+	glm::vec2 relOffs = glm::vec2(0, 0);
 
 	glm::vec3 tint = glm::vec3(1, 1, 1);
 	bool tinted = false;

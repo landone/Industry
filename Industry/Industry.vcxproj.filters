@@ -74,6 +74,9 @@
     <ClCompile Include="Model.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="UIControl.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.h">
@@ -140,6 +143,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControl.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

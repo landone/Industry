@@ -167,6 +167,7 @@
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="UIControl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicShader.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="UIControl.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

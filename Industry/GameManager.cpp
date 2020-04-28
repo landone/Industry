@@ -6,7 +6,7 @@ GameManager::GameManager() {
 	cam.setOffset(8.0f);
 	cam.rotate(glm::vec3(PI / 4.0f, 0, 0));
 	cam.setRotLimit(glm::vec2(PI / 180.0f, PI / 2.1f));
-	cam.setOffsetLimit(glm::vec2(4.0f, 16.0f));
+	cam.setOffsetLimit(glm::vec2(4.0f, 10.0f));
 	display = Display::getGlobal();
 	selector.setModel("models/Selector.obj", false);
 	selector.setVisible(false);

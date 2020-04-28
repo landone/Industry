@@ -5,6 +5,7 @@
 #include "Display.h"
 #include "Model.h"
 #include "Factory.h"
+#include "UIControl.h"
 
 class GameManager : public MouseListener {
 public:
@@ -22,6 +23,8 @@ private:
 	bool onMouseWheel(double) override;
 
 	glm::vec3 rayPlaneCol(glm::vec3 orig, glm::vec3 dir, glm::vec3 normal, glm::vec3 planePt);
+
+	UIControl uiControl;
 
 	Model selector;
 	Factory factory;
