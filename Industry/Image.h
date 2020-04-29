@@ -4,7 +4,7 @@
 #include "Evt_Display.h"
 #include "Evt_Mouse.h"
 
-class Image : public DisplayListener, MouseListener {
+class Image : public DisplayListener, public MouseListener {
 public:
 
 	Image();
@@ -36,6 +36,8 @@ public:
 
 	void setTint(float r, float g, float b);
 	void setTint(glm::vec3);
+	void setVisibility(bool);
+	bool getVisibility() { return visible; }
 	void setTiled(bool);
 	bool getTiled() { return tiled; }
 	glm::vec3 getTint() { return tint; }
@@ -55,6 +57,7 @@ private:
 	void checkChanged();
 	bool transChanged = false;
 	bool texChanged = false;
+	bool visible = true;
 
 	Mesh mesh;
 	Transform trans;

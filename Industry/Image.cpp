@@ -70,6 +70,9 @@ bool Image::onMouseRelease(int button, int x, int y) {
 
 void Image::onDrawGUI(GBuffer& buf) {
 
+	if (!visible) {
+		return;
+	}
 	checkChanged();
 	tex.bind();
 	if (tinted) {
@@ -209,6 +212,12 @@ void Image::setTint(glm::vec3 color) {
 
 	tint = color;
 	tinted = (tint != glm::vec3(1, 1, 1));
+
+}
+
+void Image::setVisibility(bool toggle) {
+
+	visible = toggle;
 
 }
 

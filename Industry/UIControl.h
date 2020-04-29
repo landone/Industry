@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Image.h"
+#include "Button.h"
 
 class UIControl {
 public:
@@ -10,5 +10,9 @@ public:
 private:
 
 	Image img;
+	Button gear;
+	Texture background;
+
+	static void gearCbk(Button&, void*);
 
 };

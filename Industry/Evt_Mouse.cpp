@@ -1,6 +1,6 @@
 #include "Evt_Mouse.h"
 
-static MouseListener::MouseLayerNode* layerHeads[MouseLayer_Front] = { nullptr };
+static MouseListener::MouseLayerNode* layerHeads[MouseLayer_Front][2] = { nullptr };
 
 static bool buttons[3];
 
@@ -25,12 +25,16 @@ void MouseListener::setMouseLayer(MouseLayer mLayer) {
 	if (layer != MouseLayer_None) {
 		int index = (int)layer - 1;
 		myNode.obj = this;
-		myNode.next = layerHeads[index];
+		myNode.next = layerHeads[index][0];
 		myNode.prev = nullptr;
-		if (layerHeads[index] != nullptr) {
-			layerHeads[index]->prev = &myNode;
+		if (layerHeads[index][0] != nullptr) {
+			layerHeads[index][0]->prev = &myNode;
 		}
-		layerHeads[index] = &myNode;
+		else {
+			/* Set tail if previously empty list */
+			layerHeads[index][1] = &myNode;
+		}
+		layerHeads[index][0] = &myNode;
 	}
 
 }
@@ -44,10 +48,14 @@ void MouseListener::removeMouseLayer() {
 		}
 		else {
 			/* If no prev, we must be head */
-			layerHeads[(int)layer - 1] = myNode.next;
+			layerHeads[(int)layer - 1][0] = myNode.next;
 		}
 		if (myNode.next) {
 			myNode.next->prev = myNode.prev;
+		}
+		else {
+			/* If no next, we must be tail */
+			layerHeads[(int)layer - 1][1] = myNode.prev;
 		}
 	}
 
@@ -57,7 +65,7 @@ void MouseListener::removeMouseLayer() {
 
 void Evt_Mouse::sendMouseMotion(double xrel, double yrel) {
 	for (int i = (int)MouseLayer_Front - 1; i >= 0; i--) {
-		MouseListener::MouseLayerNode* node = layerHeads[i];
+		MouseListener::MouseLayerNode* node = layerHeads[i][0];
 		bool blocked = false;
 		while (node && !blocked) {
 			blocked = node->obj->onMouseMotion(xrel, yrel);
@@ -72,7 +80,7 @@ void Evt_Mouse::sendMouseMotion(double xrel, double yrel) {
 void Evt_Mouse::sendMousePress(int button, int x, int y) {
 	buttons[button] = true;
 	for (int i = (int)MouseLayer_Front - 1; i >= 0; i--) {
-		MouseListener::MouseLayerNode* node = layerHeads[i];
+		MouseListener::MouseLayerNode* node = layerHeads[i][0];
 		bool blocked = false;
 		while (node && !blocked) {
 			blocked = node->obj->onMousePress(button, x, y);
@@ -87,7 +95,7 @@ void Evt_Mouse::sendMousePress(int button, int x, int y) {
 void Evt_Mouse::sendMouseRelease(int button, int x, int y) {
 	buttons[button] = false;
 	for (int i = (int)MouseLayer_Front - 1; i >= 0; i--) {
-		MouseListener::MouseLayerNode* node = layerHeads[i];
+		MouseListener::MouseLayerNode* node = layerHeads[i][0];
 		bool blocked = false;
 		while (node && !blocked) {
 			blocked = node->obj->onMouseRelease(button, x, y);
@@ -101,7 +109,7 @@ void Evt_Mouse::sendMouseRelease(int button, int x, int y) {
 
 void Evt_Mouse::sendMouseWheel(double amount) {
 	for (int i = (int)MouseLayer_Front - 1; i >= 0; i--) {
-		MouseListener::MouseLayerNode* node = layerHeads[i];
+		MouseListener::MouseLayerNode* node = layerHeads[i][0];
 		bool blocked = false;
 		while (node && !blocked) {
 			blocked = node->obj->onMouseWheel(amount);

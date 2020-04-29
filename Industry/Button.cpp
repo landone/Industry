@@ -1,6 +1,12 @@
 #include "Button.h"
 #include "Display.h"
 
+Button::Button() : Image() {
+
+
+
+}
+
 Button::Button(Texture tex) : Image(tex) {
 
 
@@ -20,7 +26,7 @@ bool Button::onMouseRelease(int button, int x, int y) {
 	glm::vec2 size = getTrueSize();
 	if ((point[0] > pos.x&& point[0] < pos.x + size.x) && (point[1] > pos.y&& point[1] < pos.y + size.y)) {
 		if (callback) {
-			callback();
+			callback((*this), data);
 		}
 		return true;
 	}
@@ -29,8 +35,9 @@ bool Button::onMouseRelease(int button, int x, int y) {
 
 }
 
-void Button::setCallback(void(*f)()) {
+void Button::setCallback(void(*f)(Button&,void*), void* d) {
 
 	callback = f;
+	data = d;
 
 }
