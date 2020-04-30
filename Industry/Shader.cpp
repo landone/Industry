@@ -6,16 +6,6 @@
 
 static Mesh quadMesh;
 static bool meshInit = false;
-static const std::vector<Vertex> vertices{
-	Vertex{ glm::vec3(-1,-1,0),glm::vec3(0, 0, 1),glm::vec2(0,0) },
-	Vertex{ glm::vec3(1,-1,0),glm::vec3(0, 0, 1),glm::vec2(1,0) },
-	Vertex{ glm::vec3(1,1,0),glm::vec3(0, 0, 1),glm::vec2(1,1) },
-	Vertex{ glm::vec3(-1,1,0),glm::vec3(0, 0, 1),glm::vec2(0,1) }
-};
-static const std::vector<GLuint> indices{
-	0, 1, 2,
-	2, 3, 0
-};
 
 static GLuint CreateShader(const std::string& text, GLenum shaderType);
 static std::string LoadShader(const std::string& fileName);
@@ -51,7 +41,7 @@ Shader::Shader(std::string pathway, bool geom) {
 	if (!meshInit) {
 
 		meshInit = true;
-		quadMesh.Init(vertices, indices);
+		quadMesh.createQuad();
 
 	}
 

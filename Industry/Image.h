@@ -42,6 +42,10 @@ public:
 	bool getTiled() { return tiled; }
 	glm::vec3 getTint() { return tint; }
 
+protected:
+
+	Texture tex;
+
 private:
 
 	void onDrawGUI(GBuffer&) override;
@@ -61,7 +65,6 @@ private:
 
 	Mesh mesh;
 	Transform trans;
-	Texture tex;
 
 	glm::vec2 relPos = glm::vec2(0,0);
 	glm::vec2 absPos = glm::vec2(0,0);

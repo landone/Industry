@@ -23,10 +23,13 @@ public:
 		Init(verts, indices);
 	}
 
+	void createQuad(bool centered = true);
+
 	Mesh& Init(std::vector<Vertex> vertices, std::vector<GLuint> indices);
 	bool Load(std::string path, bool backfaceCull = true);
 	void draw();
 
+	void setQuadTextureCoord(glm::vec2 bottomLeft, glm::vec2 topRight);
 	void setTextureScale(glm::vec2);
 	void setTextureOffset(glm::vec2);
 	std::vector<Vertex>& getVertices() { return vertices; }

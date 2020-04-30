@@ -7,7 +7,7 @@ static vector<Entity*> entities;
 
 Entity::Entity() {
 
-	id = entities.size();
+	id = (int)entities.size();
 	entities.push_back(this);
 
 }

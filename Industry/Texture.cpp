@@ -85,6 +85,12 @@ void Texture::unloadAll() {
 	globals.clear();
 }
 
+void Texture::unloadThis() {
+
+	glDeleteTextures(1, &m_texture);
+
+}
+
 void Texture::bind(GLuint id) {
 	glActiveTexture(GL_TEXTURE0 + id);
 	glBindTexture(GL_TEXTURE_2D, m_texture);

@@ -4,6 +4,22 @@
 #include <iostream>
 
 static const std::string DEFAULT_TEXTURE = "./textures/missing.png";
+static const std::vector<Vertex> g_centered{
+	Vertex{ glm::vec3(-1,-1,0),glm::vec3(0, 0, 1),glm::vec2(0,0) },
+	Vertex{ glm::vec3(1,-1,0),glm::vec3(0, 0, 1),glm::vec2(1,0) },
+	Vertex{ glm::vec3(1,1,0),glm::vec3(0, 0, 1),glm::vec2(1,1) },
+	Vertex{ glm::vec3(-1,1,0),glm::vec3(0, 0, 1),glm::vec2(0,1) }
+};
+static const std::vector<Vertex> g_notCentered{
+	Vertex{ glm::vec3(0,0,0),glm::vec3(0, 0, 1),glm::vec2(0,0) },
+	Vertex{ glm::vec3(1,0,0),glm::vec3(0, 0, 1),glm::vec2(1,0) },
+	Vertex{ glm::vec3(1,1,0),glm::vec3(0, 0, 1),glm::vec2(1,1) },
+	Vertex{ glm::vec3(0,1,0),glm::vec3(0, 0, 1),glm::vec2(0,1) }
+};
+static const std::vector<GLuint> g_indices{
+	0, 1, 2,
+	2, 3, 0
+};
 
 Mesh& Mesh::Init(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
 
@@ -11,6 +27,30 @@ Mesh& Mesh::Init(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
 	this->indices = indices;
 	setupMesh();
 	return *this;
+
+}
+
+void Mesh::createQuad(bool centered) {
+
+	Init(centered ? g_centered : g_notCentered, g_indices);
+
+}
+
+void Mesh::setQuadTextureCoord(glm::vec2 bottomLeft, glm::vec2 topRight) {
+
+	if (vertices.size() != 4) {//Must be quad
+		return;
+	}
+
+	vertices[0].texCoord = glm::vec2(bottomLeft.x, topRight.y);
+	vertices[1].texCoord = topRight;
+	vertices[2].texCoord = glm::vec2(topRight.x, bottomLeft.y);
+	vertices[3].texCoord = bottomLeft;
+
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), &vertices[0]);
+	glBindVertexArray(0);
 
 }
 
@@ -100,6 +140,8 @@ void Mesh::draw() {
 
 Mesh::~Mesh() {
 	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
 }
 
 bool Mesh::Load(std::string path, bool backfaceCull) {

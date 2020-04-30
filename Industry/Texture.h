@@ -19,6 +19,8 @@ public:
 	glm::vec2 getDimensions() { return dim; }
 
 	static void unloadAll();
+	/* CAREFUL: ensure others aren't referencing this */
+	void unloadThis();
 
 	std::string pathway;
 private:

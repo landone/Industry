@@ -4,6 +4,8 @@
 #include "GameDisplay.h"
 #include "GameManager.h"
 #include "Image.h"
+#include "Text.h"
+
 int main() {
 
 	srand(clock()); //Enable random number gens
@@ -17,6 +19,12 @@ int main() {
 
 	display.setAmbientColor(0, 0.5, 1);
 	display.setResizable(true);
+	
+	std::string str = "r/RoastMe";
+	Text tex(str);
+	tex.setRelPos(-1, -1);
+	tex.setRelSize(0, 0);
+	tex.setAbsSize(64 * str.size(), 64);
 
 	while (display.isOpen()) {
 
