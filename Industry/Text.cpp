@@ -10,6 +10,7 @@ Text::Text() {
 	BasicShader& shader = (*BasicShader::getGlobal());
 	buf = shader.createBuffer();
 	tex.setIndex(shader.createTex());
+	mesh.createQuad(false);
 
 }
 
@@ -33,7 +34,6 @@ void Text::setText(std::string str) {
 
 }
 
-/* TODO: Optimize and cleanup PLEASE */
 void Text::createTexture() {
 
 	GLint prevBound = 0;
@@ -44,25 +44,29 @@ void Text::createTexture() {
 	BasicShader& shader = (*BasicShader::getGlobal());
 	shader.setBuffer(buf);
 	shader.setGLTex(tex.getIndex());
-	int len = (int)text.length();
-	//float width = fontTex.getDimensions().x / 16.0f * len;
-	//float height = fontTex.getDimensions().y / 16.0f;
-	float width = 1280, height = 256;
+
+	/* Prepare texture dimensions */
 	/* Assume ascii 16*16 character map */
+	int len = (int)text.length();
+	float width = fontTex.getDimensions().x / 8.0f * len;
+	float height = fontTex.getDimensions().y / 8.0f;
 	shader.updateDimensions((int)width, (int)height);
-	/* shader.setTint(color); */
 	fontTex.bind();
-	Mesh mesh;
-	mesh.createQuad(false);
+
 	Transform trans;
 	GLint dims[4] = { 0 };
 	glGetIntegerv(GL_VIEWPORT, dims);
+	/* Draw characters to reusable texture */
 	if (len > 0) {
-		trans.SetScale(glm::vec3((1.0f / len) * width / dims[2], 1.0f * height / dims[3], 1));
+		/* Scale for texture from viewport size */
+		glm::vec2 convert = glm::vec2(width / (len * dims[2]), height / dims[3]);
+		trans.SetScale(glm::vec3(convert.x, convert.y, 1.0f));
 		for (int i = 0; i < len; i++) {
-
-			trans.SetPos(glm::vec3((-1.0f + i * 1.0f / len + 1) / dims[2] * width - 1, -1, 0));
+			/* Position mesh starting from bottom left corner */
+			trans.SetPos(glm::vec3(i * convert.x - 1, -1, 0));
 			shader.setTransMat(trans.GetMatrix());
+			/* Position texture coords to point at character */
+			/* Font coords start at bottom left */
 			char c = text.at(i);
 			glm::vec2 bottomLeft((c % 16) / 16.0f, (16 - c / 16) / 16.0f);
 			mesh.setQuadTextureCoord(bottomLeft, bottomLeft + glm::vec2(1 / 16.0f, -1 / 16.0f));
@@ -70,7 +74,6 @@ void Text::createTexture() {
 
 		}
 	}
-	mesh.setQuadTextureCoord(glm::vec2(0, 0), glm::vec2(1, 1));
 
 	glBindFramebuffer(GL_FRAMEBUFFER, prevBound);
 

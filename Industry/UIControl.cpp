@@ -16,11 +16,26 @@ UIControl::UIControl() {
 	gear.setAbsSize(32, 32);
 	gear.setCallback(gearCbk, this);
 
+	std::string str = "Test Text";
+	tex.setTint(1, 0, 1);
+	tex.setText(str);
+	tex.setRelPos(-1, -1);
+	tex.setRelSize(0, 0);
+	tex.setAbsSize(64 * str.size(), 64);
+
 }
 
 void UIControl::gearCbk(Button& button, void* data) {
 
 	UIControl& self = (*(UIControl*)data);
 	self.img.setVisibility(!self.img.getVisibility());
+
+	std::string str;
+	int size = (rand() % 4) + 4;
+	for (int i = 0; i < size; i++) {
+		str += (char)(rand() % 256);
+	}
+	self.tex.setAbsSize(64 * str.size(), 64);
+	self.tex.setText(str);
 
 }

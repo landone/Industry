@@ -10,13 +10,16 @@ public:
 	~Text();
 
 	void setText(std::string);
+	std::string getText() { return text; }
 
 private:
 
 	void createTexture();
 
+	Mesh mesh;
 	std::string text;
 	std::string font;
+	/* Personal buffer prevents blocking */
 	GLuint buf = 0;
 
 };
