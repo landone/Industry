@@ -4,21 +4,40 @@
 #include <time.h>
 
 static std::vector<DisplayListener*> listeners;
-static DisplayListener::GUILayerNode* layerHeads[GUILayer_Front][2] = { nullptr };
+static DisplayListener::GUILayerNode* layerEnds[GUILayer_Front][2] = { nullptr }; //[Layer][Head, Tail]
 long long Evt_Display::lastFrame = 0;
 long long Evt_Display::thisFrame = 0;
 
 DisplayListener::DisplayListener() : myNode{ 0 } {
+	myNode.obj = this;
 	listeners.push_back(this);
 }
 
-DisplayListener::DisplayListener(const DisplayListener& t) : myNode{ 0 } {
-	listeners.push_back(this);
-}
+DisplayListener::DisplayListener(const DisplayListener& t) : DisplayListener() {}
 
 DisplayListener::~DisplayListener() {
 	listeners.erase(std::remove(listeners.begin(), listeners.end(), this), listeners.end());
 	removeGUILayer();
+}
+
+void DisplayListener::GUIInFrontOf(DisplayListener& target) {
+
+	if (target.getGUILayer() == GUILayer_None) {
+		return;
+	}
+
+	removeGUILayer();
+	GUILayerNode& tNode = target.myNode;
+	myNode.prev = tNode.prev;
+	myNode.next = &tNode;
+	if (tNode.prev) {
+		tNode.prev->next = &myNode;
+	}
+	else {
+		layerEnds[(int)target.getGUILayer() - 1][0] = &myNode;
+	}
+	tNode.prev = &myNode;
+
 }
 
 void DisplayListener::setGUILayer(GUILayer mLayer) {
@@ -33,17 +52,16 @@ void DisplayListener::setGUILayer(GUILayer mLayer) {
 	/* Append to new list as head */
 	if (guiLayer != GUILayer_None) {
 		int index = (int)guiLayer - 1;
-		myNode.obj = this;
-		myNode.next = layerHeads[index][0];
+		myNode.next = layerEnds[index][0];
 		myNode.prev = nullptr;
-		if (layerHeads[index][0] != nullptr) {
-			layerHeads[index][0]->prev = &myNode;
+		if (layerEnds[index][0] != nullptr) {
+			layerEnds[index][0]->prev = &myNode;
 		}
 		else {
 			/* Set tail if previously empty list */
-			layerHeads[index][1] = &myNode;
+			layerEnds[index][1] = &myNode;
 		}
-		layerHeads[index][0] = &myNode;
+		layerEnds[index][0] = &myNode;
 	}
 
 }
@@ -57,14 +75,14 @@ void DisplayListener::removeGUILayer() {
 		}
 		else {
 			/* If no prev, we must be head */
-			layerHeads[(int)guiLayer - 1][0] = myNode.next;
+			layerEnds[(int)guiLayer - 1][0] = myNode.next;
 		}
 		if (myNode.next) {
 			myNode.next->prev = myNode.prev;
 		}
 		else {
 			/* If no next, we must be tail */
-			layerHeads[(int)guiLayer - 1][1] = myNode.prev;
+			layerEnds[(int)guiLayer - 1][1] = myNode.prev;
 		}
 	}
 
@@ -90,7 +108,7 @@ void Evt_Display::sendFrame() {
 
 void Evt_Display::sendDrawGUI(GBuffer& gBuffer) {
 	for (int i = 0; i < (int)GUILayer_Front; i++) {
-		DisplayListener::GUILayerNode* node = layerHeads[i][1];
+		DisplayListener::GUILayerNode* node = layerEnds[i][1];
 		while (node) {
 			node->obj->onDrawGUI(gBuffer);
 			node = node->prev;
@@ -100,7 +118,7 @@ void Evt_Display::sendDrawGUI(GBuffer& gBuffer) {
 
 void Evt_Display::sendDraw3DGUI(GBuffer& gBuffer) {
 	for (int i = 0; i < (int)GUILayer_Front; i++) {
-		DisplayListener::GUILayerNode* node = layerHeads[i][1];
+		DisplayListener::GUILayerNode* node = layerEnds[i][1];
 		while (node) {
 			node->obj->onDraw3DGUI(gBuffer);
 			node = node->prev;

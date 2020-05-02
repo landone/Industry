@@ -15,6 +15,7 @@ public:
 
 	void setMouseLayer(MouseLayer);
 	MouseLayer getMouseLayer() { return layer; }
+	void MouseInFrontOf(MouseListener&);
 
 	struct MouseLayerNode {
 		MouseListener* obj;

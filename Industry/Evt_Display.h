@@ -18,6 +18,7 @@ public:
 
 	void setGUILayer(GUILayer);
 	GUILayer getGUILayer() { return guiLayer; }
+	void GUIInFrontOf(DisplayListener&);
 
 	struct GUILayerNode {
 		DisplayListener* obj;
