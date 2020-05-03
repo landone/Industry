@@ -20,6 +20,12 @@ Text::Text(std::string str) : Text() {
 
 }
 
+void Text::setFont(std::string str) {
+
+	font = str;
+
+}
+
 Text::~Text() {
 
 	glDeleteBuffers(1, &buf);

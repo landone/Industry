@@ -32,7 +32,7 @@ Image::Image(Texture tex) : Image() {
 
 bool Image::onMousePress(int button, int x, int y) {
 
-	if (button == 1) {
+	if (button == 1 || !visible) {
 		return false;
 	}
 	float point[2];
@@ -51,7 +51,7 @@ bool Image::onMousePress(int button, int x, int y) {
 
 bool Image::onMouseRelease(int button, int x, int y) {
 
-	if (button == 1) {
+	if (button == 1 || !visible) {
 		return false;
 	}
 	float point[2];

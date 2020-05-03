@@ -10,5 +10,6 @@ public:
 private:
 
 	Model mdl;
+	Model test;
 
 };

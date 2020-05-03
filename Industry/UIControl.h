@@ -10,11 +10,16 @@ public:
 
 private:
 
-	Image img;
+	Image rateTab;
+	Image totalTab;
+	Image mainTab;
+	Image menu;
+	Button factoryBtn;
 	Button gear;
 	Text tex;
 	Texture background;
 
 	static void gearCbk(Button&, void*);
+	static void factoryCbk(Button&, void*);
 
 };

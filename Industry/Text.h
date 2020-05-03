@@ -11,6 +11,7 @@ public:
 
 	void setText(std::string);
 	std::string getText() { return text; }
+	void setFont(std::string);
 
 private:
 
