@@ -8,8 +8,6 @@ GameManager::GameManager() {
 	cam.setRotLimit(glm::vec2(PI / 180.0f, PI / 2.1f));
 	cam.setOffsetLimit(glm::vec2(4.0f, 10.0f));
 	display = Display::getGlobal();
-	selector.setModel("models/Selector.obj", false);
-	selector.setVisible(false);
 
 }
 
@@ -31,18 +29,14 @@ bool GameManager::onMousePress(int button, int x, int y) {
 		glm::vec4 pt(x * pxScr.x - 1, 1 - y * pxScr.y, 1, 1);
 		/* Ray coming from camera */
 		glm::vec3 ray = glm::normalize(glm::vec3(glm::inverse(cam.getViewMatrix()) * pt));
-		glm::vec3 col = rayPlaneCol(cam.getOffsetPos(), ray, glm::vec3(0, 1, 0), glm::vec3());
-		col.x = ceilf(col.x);
-		col.z = floorf(col.z);
-		selector.setPos(col);
-		selector.setVisible(true);
+		factory.raycast(cam.getOffsetPos(), ray);
 	}
 	else if (button == 1) {
 		middleMouse = true;
 		display->relativeCursor(true);
 	}
 	else if (button == 2) {
-		selector.setVisible(false);
+		/* Right-click */
 	}
 
 	return false;
@@ -71,11 +65,16 @@ bool GameManager::onMouseWheel(double amt) {
 glm::vec3 GameManager::rayPlaneCol(glm::vec3 orig, glm::vec3 dir, glm::vec3 normal, glm::vec3 planePt) {
 
 	float step = glm::dot(dir, normal);
+	/* Perpendicular case */
 	if (step == 0) {
-		return glm::vec3();
+		return orig;
 	}
-	/* Distance from plane divided by length of direction */
+	/* Amount of steps until collision */
 	float mag = glm::dot(planePt - orig, normal) / step;
+	/* Only allow forwards collision */
+	if (mag <= 0) {
+		return orig;
+	}
 	return orig + dir * mag;
 
 }

@@ -12,6 +12,7 @@ private:
 
 	Image rateTab;
 	Image totalTab;
+	Text money;
 	Image mainTab;
 	Image menu;
 	Button factoryBtn;

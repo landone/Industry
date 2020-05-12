@@ -19,6 +19,12 @@ UIControl::UIControl() {
 	totalTab.setAbsPos(0, -48);
 	totalTab.setAbsSize(256, 48);
 
+	money.setRelPos(-1, 1);
+	money.setRelSize(0, 0);
+	money.setAbsPos(0, -48);
+	money.setAbsSize(128, 48);
+	money.setText("$");
+
 	mainTab.setTexture(background);
 	mainTab.setTiled(true);
 	mainTab.setRelPos(-1, -1);

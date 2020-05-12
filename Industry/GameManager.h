@@ -15,6 +15,13 @@ public:
 	Camera& getCamera() { return cam; }
 	Camera& getGUICamera() { return guiCam; }
 
+	
+	/*
+	Get collision point of plane and ray
+	Return origin if not possible
+	*/
+	static glm::vec3 rayPlaneCol(glm::vec3 orig, glm::vec3 dir, glm::vec3 normal, glm::vec3 planePt);
+
 private:
 
 	bool onMouseMotion(double, double) override;
@@ -22,11 +29,8 @@ private:
 	bool onMouseRelease(int button, int x, int y) override;
 	bool onMouseWheel(double) override;
 
-	glm::vec3 rayPlaneCol(glm::vec3 orig, glm::vec3 dir, glm::vec3 normal, glm::vec3 planePt);
-
 	UIControl uiControl;
 
-	Model selector;
 	Factory factory;
 
 	Display* display = nullptr;
