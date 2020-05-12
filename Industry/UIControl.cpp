@@ -20,9 +20,8 @@ UIControl::UIControl() {
 	totalTab.setAbsSize(256, 48);
 
 	money.setRelPos(-1, 1);
-	money.setRelSize(0, 0);
-	money.setAbsPos(0, -48);
-	money.setAbsSize(128, 48);
+	money.setAbsPos(0, -36);
+	money.setFontSize(24);
 	money.setText("$");
 
 	mainTab.setTexture(background);
@@ -58,8 +57,7 @@ UIControl::UIControl() {
 	tex.setText(str);
 	tex.setRelPos(-1, -1);
 	tex.setAbsPos(128, 0);
-	tex.setRelSize(0, 0);
-	tex.setAbsSize(64 * str.size(), 64);
+	tex.setFontSize(32);
 	tex.setVisibility(false);
 
 }
@@ -74,6 +72,10 @@ void UIControl::gearCbk(Button& button, void* data) {
 
 void UIControl::factoryCbk(Button& btn, void* data) {
 
-	std::cout << "Pressed\n";
+	UIControl& self = (*(UIControl*)data);
+	static int money = 0;
+	std::string output = "$";
+	output += std::to_string(++money);
+	self.money.setText(output);
 
 }

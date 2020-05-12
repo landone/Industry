@@ -12,6 +12,8 @@ public:
 	void setText(std::string);
 	std::string getText() { return text; }
 	void setFont(std::string);
+	/* Set font size in pixels */
+	void setFontSize(float);
 
 private:
 
@@ -20,6 +22,7 @@ private:
 	Mesh mesh;
 	std::string text;
 	std::string font;
+	float fontSz;
 	/* Personal buffer prevents blocking */
 	GLuint buf = 0;
 

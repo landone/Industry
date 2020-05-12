@@ -11,7 +11,7 @@ Text::Text() {
 	buf = shader.createBuffer();
 	tex.setIndex(shader.createTex());
 	mesh.createQuad(false);
-
+	
 }
 
 Text::Text(std::string str) : Text() {
@@ -33,10 +33,20 @@ Text::~Text() {
 
 }
 
+void Text::setFontSize(float h) {
+
+	setRelSize(0, 0);
+	setAbsSize(text.length() * h, h);
+	fontSz = h;
+
+}
+
 void Text::setText(std::string str) {
 
 	text = str;
 	createTexture();
+	/* Update length */
+	setFontSize(fontSz);
 
 }
 
@@ -65,7 +75,7 @@ void Text::createTexture() {
 	/* Draw characters to reusable texture */
 	if (len > 0) {
 		/* Scale for texture from viewport size */
-		glm::vec2 convert = glm::vec2(width / (len * dims[2]), height / dims[3]);
+		glm::vec2 convert = glm::vec2(2 * width / (len * dims[2]), 2 * height / dims[3]);
 		trans.SetScale(glm::vec3(convert.x, convert.y, 1.0f));
 		for (int i = 0; i < len; i++) {
 			/* Position mesh starting from bottom left corner */
