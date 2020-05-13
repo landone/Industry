@@ -1,6 +1,7 @@
 #include <time.h>
 #include <iostream>
 
+#include "Assets.h"
 #include "GameDisplay.h"
 #include "GameManager.h"
 #include "Image.h"
@@ -10,7 +11,9 @@ int main() {
 
 	srand(clock()); //Enable random number gens
 	
+	/* Display initializes GLEW, so it must occur first */
 	GameDisplay display(800, 450, "Industry");
+	Assets::LoadAll();
 
 	GameManager gameMan;
 

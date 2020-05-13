@@ -22,7 +22,7 @@ UIControl::UIControl() {
 	money.setRelPos(-1, 1);
 	money.setAbsPos(0, -36);
 	money.setFontSize(24);
-	money.setText("$");
+	money.setText("$000.000");
 
 	mainTab.setTexture(background);
 	mainTab.setTiled(true);
@@ -73,9 +73,47 @@ void UIControl::gearCbk(Button& button, void* data) {
 void UIControl::factoryCbk(Button& btn, void* data) {
 
 	UIControl& self = (*(UIControl*)data);
-	static int money = 0;
+
+}
+
+void UIControl::setMoney(long long amt) {
+
 	std::string output = "$";
-	output += std::to_string(++money);
-	self.money.setText(output);
+	std::string remain = "";
+	char symbol = '\0';
+	static const long long BILLION = 1000000000;
+	static const long long MILLION = 1000000;
+	static const long long GRAND = 1000;
+	if (amt >= BILLION) {
+		output += std::to_string(amt / BILLION);
+		remain = std::to_string((amt % BILLION) / MILLION);
+		symbol = 'B';
+	}
+	else if (amt >= MILLION) {
+		output += std::to_string(amt / MILLION);
+		remain = std::to_string((amt % MILLION) / GRAND);
+		symbol = 'M';
+	}
+	else if (amt >= GRAND) {
+		output += std::to_string(amt / GRAND);
+		remain = std::to_string(amt % GRAND);
+		symbol = 'K';
+	}
+	else {
+		output += std::to_string(amt);
+	}
+
+	if (symbol != '\0') {
+		if (remain.size() > 0 && remain != "0") {
+			output += ".";
+			for (int i = remain.size(); i < 3; i++) {
+				output += "0";
+			}
+			output += remain;
+		}
+		output += symbol;
+	}
+
+	money.setText(output);
 
 }

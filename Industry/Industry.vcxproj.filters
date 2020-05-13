@@ -80,6 +80,9 @@
     <ClCompile Include="Text.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Assets.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.h">
@@ -152,6 +155,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Text.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Assets.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

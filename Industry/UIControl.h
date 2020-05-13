@@ -8,6 +8,9 @@ public:
 
 	UIControl();
 
+	/* Display monetary value */
+	void setMoney(long long);
+
 private:
 
 	Image rateTab;

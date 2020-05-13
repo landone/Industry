@@ -1,6 +1,8 @@
 #include "GameManager.h"
 #include <iostream>
 
+static const long long START_MONEY = 10000;
+
 GameManager::GameManager() {
 
 	cam.setOffset(8.0f);
@@ -8,6 +10,8 @@ GameManager::GameManager() {
 	cam.setRotLimit(glm::vec2(PI / 180.0f, PI / 2.1f));
 	cam.setOffsetLimit(glm::vec2(4.0f, 10.0f));
 	display = Display::getGlobal();
+	money = START_MONEY;
+	uiControl.setMoney(money);
 
 }
 
@@ -16,7 +20,7 @@ bool GameManager::onMouseMotion(double x, double y) {
 	if (middleMouse) {
 		cam.rotate(glm::vec3(-y, x, 0) * sensitivity);
 	}
-
+	
 	return false;
 
 }

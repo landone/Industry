@@ -6,13 +6,10 @@ Model::Model() {
 
 }
 
-bool Model::setModel(std::string path, bool backfaceCull) {
+void Model::setModel(MODELS type) {
 
-	if (!mesh.Load(path, backfaceCull)) {
-		return false;
-	}
-	mdlPath = path;
-	return true;
+	this->type = type;
+	Assets::mesh(type, mesh);
 
 }
 

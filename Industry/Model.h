@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Mesh.h"
+#include "Assets.h"
 #include "Entity.h"
 #include "Evt_Display.h"
 
@@ -9,17 +10,17 @@ public:
 
 	Model();
 
-	bool setModel(std::string path, bool backfaceCull = true);
+	void setModel(MODELS);
 	void setVisible(bool);
 
-	std::string getModel() { return mdlPath; }
+	MODELS getType() { return type; }
 
 private:
 
 	void onDrawGeometry(GBuffer&) override;
 
 	Mesh mesh;
-	std::string mdlPath;
+	MODELS type;
 	bool visible = true;
 
 };

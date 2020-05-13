@@ -30,6 +30,18 @@ Mesh& Mesh::Init(std::vector<Vertex> vertices, std::vector<GLuint> indices) {
 
 }
 
+void Mesh::copy(Mesh& src) {
+
+	vertices = src.vertices;
+	indices = src.indices;
+	setupMesh();
+	objects = src.objects;
+	textures = src.textures;
+	textureScale = src.textureScale;
+	textureOffs = src.textureOffs;
+
+}
+
 void Mesh::createQuad(bool centered) {
 
 	Init(centered ? g_centered : g_notCentered, g_indices);
@@ -98,7 +110,7 @@ void Mesh::updateVertices() {
 }
 
 void Mesh::setupMesh() {
-
+	
 	if (VAO == NULL) {
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
@@ -139,9 +151,18 @@ void Mesh::draw() {
 }
 
 Mesh::~Mesh() {
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	deleteBuffers();
+}
+
+void Mesh::deleteBuffers() {
+	if (VAO != NULL) {
+		glDeleteVertexArrays(1, &VAO);
+		glDeleteBuffers(1, &VBO);
+		glDeleteBuffers(1, &EBO);
+	}
+	VAO = NULL;
+	VBO = NULL;
+	EBO = NULL;
 }
 
 bool Mesh::Load(std::string path, bool backfaceCull) {

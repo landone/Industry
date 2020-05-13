@@ -30,8 +30,9 @@ private:
 	bool onMouseWheel(double) override;
 
 	UIControl uiControl;
-
 	Factory factory;
+
+	long long money;
 
 	Display* display = nullptr;
 	Camera cam;

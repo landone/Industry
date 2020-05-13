@@ -3,7 +3,7 @@
 
 Factory::Factory() {
 
-	mdl.setModel("models/DefaultFactory.obj");
+	mdl.setModel(MODEL_FACTORY1);
 	mdl.setPos(glm::vec3(4, 0, -2));
 	BuildRange range;
 	range.height = 0;
@@ -13,7 +13,7 @@ Factory::Factory() {
 	range.max[1] = 2;
 	ranges.push_back(range);
 
-	selector.setModel("models/Selector.obj", false);
+	selector.setModel(MODEL_SELECTOR);
 	selector.setVisible(false);
 
 }

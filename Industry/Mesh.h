@@ -38,6 +38,9 @@ public:
 
 	GLuint getVAO() { return VAO; }
 
+	/* Make self a copy of given mesh */
+	void copy(Mesh&);
+
 private:
 
 	struct Object {
@@ -57,6 +60,7 @@ private:
 	std::vector<Texture> textures;
 
 	void setupMesh();
+	void deleteBuffers();
 	/* Read MTL file, return vector of material name paired with pathway */
 	std::vector<std::pair<std::string, std::string>> ProcessMTL(std::string path);
 
