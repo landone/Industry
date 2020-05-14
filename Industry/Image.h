@@ -3,12 +3,12 @@
 #include "Texture.h"
 #include "Evt_Display.h"
 #include "Evt_Mouse.h"
+#include "AssetEnums.h"
 
 class Image : public DisplayListener, public MouseListener {
 public:
 
-	Image();
-	Image(Texture);
+	Image(TEXTURES = TEXTURE_NONE);
 
 	void setRelPos(float x, float y);
 	void setRelPos(glm::vec2);
@@ -31,7 +31,7 @@ public:
 	void setRelOffset(float x, float y);
 	void setRelOffset(glm::vec2);
 	
-	void setTexture(Texture);
+	void setTexture(TEXTURES);
 	Texture getTexture() { return tex; }
 
 	void setTint(float r, float g, float b);

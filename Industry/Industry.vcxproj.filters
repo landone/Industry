@@ -160,6 +160,9 @@
     <ClInclude Include="Assets.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="AssetEnums.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\basicShader.fs">

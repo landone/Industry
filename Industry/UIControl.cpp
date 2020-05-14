@@ -3,16 +3,14 @@
 
 UIControl::UIControl() {
 
-	background.Load("textures/steel.png");
-
-	rateTab.setTexture(background);
+	rateTab.setTexture(TEXTURE_UI);
 	rateTab.setTiled(true);
 	rateTab.setRelPos(1, -1);
 	rateTab.setAbsPos(-256, 0);
 	rateTab.setRelSize(0, 0);
 	rateTab.setAbsSize(256, 48);
 
-	totalTab.setTexture(background);
+	totalTab.setTexture(TEXTURE_UI);
 	totalTab.setTiled(true);
 	totalTab.setRelPos(-1, 1);
 	totalTab.setRelSize(0, 0);
@@ -24,13 +22,13 @@ UIControl::UIControl() {
 	money.setFontSize(24);
 	money.setText("$000.000");
 
-	mainTab.setTexture(background);
+	mainTab.setTexture(TEXTURE_UI);
 	mainTab.setTiled(true);
 	mainTab.setRelPos(-1, -1);
 	mainTab.setRelSize(0, 0);
 	mainTab.setAbsSize(128, 96);
 
-	menu.setTexture(background);
+	menu.setTexture(TEXTURE_UI);
 	menu.setTiled(true);
 	menu.setRelPos(-1, -1);
 	menu.setAbsPos(128, 0);
@@ -38,14 +36,14 @@ UIControl::UIControl() {
 	menu.setAbsSize(384, 96);
 	menu.setVisibility(false);
 
-	factoryBtn.setTexture(Texture("textures/gear.png"));
+	factoryBtn.setTexture(TEXTURE_GEAR);
 	factoryBtn.setRelPos(1, 1);
 	factoryBtn.setAbsPos(-64, -64);
 	factoryBtn.setRelSize(0, 0);
 	factoryBtn.setAbsSize(64, 64);
 	factoryBtn.setCallback(factoryCbk, this);
 
-	gear.setTexture(Texture("textures/gear.png"));
+	gear.setTexture(TEXTURE_GEAR);
 	gear.setRelPos(-1, -1);
 	gear.setAbsPos(48, 32);
 	gear.setRelSize(0, 0);

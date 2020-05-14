@@ -1,5 +1,6 @@
 #include "Image.h"
 #include "Display.h"
+#include "Assets.h"
 
 #define DEFAULT_TEXTURE ("textures/missing.png")
 
@@ -15,18 +16,12 @@ static const std::vector<GLuint> indices{
 	2, 3, 0
 };
 
-Image::Image() {
+Image::Image(TEXTURES type) {
 
-	tex.Load(DEFAULT_TEXTURE);
+	setTexture(type);
 	setGUILayer(GUILayer_Middle);
 	setMouseLayer(MouseLayer_Middle);
 	mesh.Init(vertices, indices);
-
-}
-
-Image::Image(Texture tex) : Image() {
-
-	this->tex = tex;
 
 }
 
@@ -96,9 +91,9 @@ void Image::setTiled(bool toggle) {
 
 }
 
-void Image::setTexture(Texture t) {
+void Image::setTexture(TEXTURES type) {
 
-	tex = t;
+	tex = Assets::texture(type);
 }
 
 void Image::onResize(int x, int y) {

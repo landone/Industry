@@ -16,9 +16,19 @@ const std::string Assets::MODEL_PATHS[MAX_MODELS] = {
 	"DefaultFactory"
 };
 
+Texture Assets::textures[MAX_TEXTURES];
+const std::string Assets::TEXTURE_FOLDER = "textures/";
+const std::string Assets::TEXTURE_PATHS[MAX_TEXTURES] = {
+	"missing.png",
+	"steel.png",
+	"gear.png",
+	"freeman.png"
+};
+
 void Assets::LoadAll() {
 
 	LoadMeshes();
+	LoadTextures();
 
 }
 
@@ -32,10 +42,29 @@ void Assets::LoadMeshes() {
 
 }
 
+void Assets::LoadTextures() {
+
+	for (int i = 0; i < MAX_TEXTURES; i++) {
+
+		textures[i].Load(TEXTURE_FOLDER + TEXTURE_PATHS[i]);
+
+	}
+
+}
+
 void Assets::mesh(MODELS type, Mesh& dest) {
 
 	if ((int)type > 0 && type < MAX_MODELS) {
 		dest.copy(meshes[type]);
 	}
+
+}
+
+Texture Assets::texture(TEXTURES type) {
+
+	if ((int)type < 0 || type >= MAX_TEXTURES) {
+		type = TEXTURE_NONE;
+	}
+	return textures[type];
 
 }

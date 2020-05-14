@@ -172,6 +172,7 @@
     <ClCompile Include="UIControl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AssetEnums.h" />
     <ClInclude Include="Assets.h" />
     <ClInclude Include="BasicShader.h" />
     <ClInclude Include="Button.h" />

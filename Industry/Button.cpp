@@ -1,13 +1,7 @@
 #include "Button.h"
 #include "Display.h"
 
-Button::Button() : Image() {
-
-
-
-}
-
-Button::Button(Texture tex) : Image(tex) {
+Button::Button(TEXTURES type) : Image(type) {
 
 
 

@@ -5,8 +5,7 @@
 class Button : public Image {
 public:
 
-	Button();
-	Button(Texture);
+	Button(TEXTURES = TEXTURE_NONE);
 
 	/* Callback passes button and data back */
 	void setCallback(void(*f)(Button&,void*), void* data);

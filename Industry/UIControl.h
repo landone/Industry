@@ -21,7 +21,6 @@ private:
 	Button factoryBtn;
 	Button gear;
 	Text tex;
-	Texture background;
 
 	static void gearCbk(Button&, void*);
 	static void factoryCbk(Button&, void*);
