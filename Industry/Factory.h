@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Machine.h"
 #include "Model.h"
 
 class Factory {
@@ -7,6 +8,7 @@ public:
 
 	Factory();
 
+	const std::vector<MACHINES>& getMachineTypes() { return machineTypes; }
 	void raycast(glm::vec3 orig, glm::vec3 dir);
 
 private:
@@ -22,5 +24,6 @@ private:
 	Model selector;
 
 	std::vector<BuildRange> ranges;
+	std::vector<MACHINES> machineTypes;
 
 };

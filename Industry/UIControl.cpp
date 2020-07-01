@@ -50,21 +50,60 @@ UIControl::UIControl() {
 	gear.setAbsSize(32, 32);
 	gear.setCallback(gearCbk, this);
 
-	std::string str = "Test Text";
-	tex.setTint(1, 0, 1);
-	tex.setText(str);
-	tex.setRelPos(-1, -1);
-	tex.setAbsPos(128, 0);
-	tex.setFontSize(32);
-	tex.setVisibility(false);
+}
+
+void UIControl::setMachines(const std::vector<MACHINES>& list) {
+
+	for (unsigned int i = 0; i < machines.size(); i++) {
+		delete machines[i];
+	}
+	machines.clear();
+
+	bool visible = menu.getVisibility();
+	for (unsigned int i = 0; i < list.size(); i++) {
+
+		machines.push_back(new StoreButton);
+		StoreButton& item = *machines[i];
+		item.index = list[i];
+		Button& b = item.button;
+		Text& t = item.text;
+
+		b.setTexture(TEXTURES::TEXTURE_GEAR);
+		b.setVisibility(visible);
+		b.setRelPos(-1, -1);
+		b.setAbsPos(128 + i * 96, 16);
+		b.setRelSize(0, 0);
+		b.setAbsSize(64, 64);
+		b.setCallback(machineCbk, this);
+		
+		t.setVisibility(visible);
+		t.setRelPos(-1, -1);
+		t.setAbsPos(b.getAbsPos() - glm::vec2(0, 16));
+		t.setRelSize(0, 0);
+		t.setFontSize(12);
+		t.setText(Machine::getName(item.index));
+
+	}
 
 }
 
 void UIControl::gearCbk(Button& button, void* data) {
 
 	UIControl& self = (*(UIControl*)data);
-	self.menu.setVisibility(!self.menu.getVisibility());
-	self.tex.setVisibility(self.menu.getVisibility());
+	bool toVis = !self.menu.getVisibility();
+	self.menu.setVisibility(toVis);
+
+	for (int i = 0; i < self.machines.size(); i++) {
+		self.machines[i]->button.setVisibility(toVis);
+		self.machines[i]->text.setVisibility(toVis);
+	}
+
+}
+
+void UIControl::machineCbk(Button& button, void* data) {
+
+	UIControl& self = (*(UIControl*)data);
+	std::cout << "Machine button pressed\n";
 
 }
 

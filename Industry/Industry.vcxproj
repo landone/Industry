@@ -160,6 +160,7 @@
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="LightShader.cpp" />
+    <ClCompile Include="Machine.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Image.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightShader.h" />
+    <ClInclude Include="Machine.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="PostProcessor.h" />

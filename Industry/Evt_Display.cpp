@@ -10,6 +10,9 @@ long long Evt_Display::thisFrame = 0;
 
 DisplayListener::DisplayListener() : myNode{ 0 } {
 	myNode.obj = this;
+	myNode.prev = nullptr;
+	myNode.next = nullptr;
+	guiLayer = GUILayer_None;
 	listeners.push_back(this);
 }
 

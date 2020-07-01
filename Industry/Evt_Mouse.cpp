@@ -6,6 +6,9 @@ static bool buttons[3];
 
 MouseListener::MouseListener() {
 	myNode.obj = this;
+	myNode.prev = nullptr;
+	myNode.next = nullptr;
+	layer = MouseLayer_None;
 	setMouseLayer(MouseLayer_Back);
 }
 

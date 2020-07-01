@@ -9,7 +9,7 @@ Button::Button(TEXTURES type) : Image(type) {
 
 bool Button::onMouseRelease(int button, int x, int y) {
 
-	if (button == 1) {
+	if (button == 1 || !getVisibility()) {
 		return false;
 	}
 	float point[2];

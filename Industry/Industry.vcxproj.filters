@@ -83,6 +83,9 @@
     <ClCompile Include="Assets.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Machine.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.h">
@@ -161,6 +164,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="AssetEnums.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Machine.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>

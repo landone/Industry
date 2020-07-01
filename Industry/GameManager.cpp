@@ -12,6 +12,7 @@ GameManager::GameManager() {
 	display = Display::getGlobal();
 	money = START_MONEY;
 	uiControl.setMoney(money);
+	uiControl.setMachines(factory.getMachineTypes());
 
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Mesh.h"
-#include "Assets.h"
+#include "AssetEnums.h"
 #include "Entity.h"
 #include "Evt_Display.h"
 

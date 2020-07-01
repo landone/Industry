@@ -16,6 +16,11 @@ Factory::Factory() {
 	selector.setModel(MODEL_SELECTOR);
 	selector.setVisible(false);
 
+	machineTypes.push_back(MACHINES::MACHINE_BOILER);
+	machineTypes.push_back(MACHINES::MACHINE_BOILER);
+	machineTypes.push_back(MACHINES::MACHINE_BOILER);
+	machineTypes.push_back(MACHINES::MACHINE_BOILER);
+
 }
 
 void Factory::raycast(glm::vec3 orig, glm::vec3 dir) {
