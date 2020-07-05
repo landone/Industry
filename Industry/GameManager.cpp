@@ -12,7 +12,36 @@ GameManager::GameManager() {
 	display = Display::getGlobal();
 	money = START_MONEY;
 	uiControl.setMoney(money);
-	uiControl.setMachines(factory.getMachineTypes());
+	uiControl.setMachines(factory.getMachineTypes(), onMachinePurchase, this);
+
+}
+
+void GameManager::onMachinePurchase(MACHINES type, void* data) {
+
+	GameManager& self = *((GameManager*)data);
+
+	long long price = Machine::getPrice(type);
+	if (self.purchase(price)) {
+
+		std::cout << "Bought machine type: " << Machine::getName(type) << std::endl;
+
+	}
+	else {
+		std::cout << "Unable to purchase machine" << std::endl;
+	}
+
+}
+
+bool GameManager::purchase(long long amt) {
+
+	if (amt > money) {
+		return false;
+	}
+
+	money -= amt;
+	uiControl.setMoney(money);
+
+	return true;
 
 }
 

@@ -18,8 +18,8 @@ Factory::Factory() {
 
 	machineTypes.push_back(MACHINES::MACHINE_BOILER);
 	machineTypes.push_back(MACHINES::MACHINE_BOILER);
-	machineTypes.push_back(MACHINES::MACHINE_BOILER);
-	machineTypes.push_back(MACHINES::MACHINE_BOILER);
+	machineTypes.push_back(MACHINES::MACHINE_STEAM_ENGINE);
+	machineTypes.push_back(MACHINES::MACHINE_STEAM_ENGINE);
 
 }
 
@@ -48,6 +48,9 @@ void Factory::raycast(glm::vec3 orig, glm::vec3 dir) {
 		result.z = floorf(result.z);
 		selector.setPos(result);
 		selector.setVisible(true);
+	}
+	else {
+		selector.setVisible(false);
 	}
 
 }

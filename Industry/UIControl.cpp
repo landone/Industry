@@ -52,7 +52,10 @@ UIControl::UIControl() {
 
 }
 
-void UIControl::setMachines(const std::vector<MACHINES>& list) {
+void UIControl::setMachines(const std::vector<MACHINES>& list, void(*callback)(MACHINES, void*), void* data) {
+
+	machineBuyCbk = callback;
+	machineBuyCbkData = data;
 
 	for (unsigned int i = 0; i < machines.size(); i++) {
 		delete machines[i];
@@ -103,7 +106,17 @@ void UIControl::gearCbk(Button& button, void* data) {
 void UIControl::machineCbk(Button& button, void* data) {
 
 	UIControl& self = (*(UIControl*)data);
-	std::cout << "Machine button pressed\n";
+
+	if (!self.machineBuyCbk) {
+		return;
+	}
+
+	for (unsigned int i = 0; i < self.machines.size(); i++) {
+		if ((&button) == &self.machines[i]->button) {
+			self.machineBuyCbk(self.machines[i]->index, self.machineBuyCbkData);
+			break;
+		}
+	}
 
 }
 

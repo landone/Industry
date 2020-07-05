@@ -13,7 +13,7 @@ public:
 	void setMoney(long long);
 
 	/* Set machine buttons in store */
-	void setMachines(const std::vector<MACHINES>&);
+	void setMachines(const std::vector<MACHINES>&, void(*callback)(MACHINES, void*), void* data);
 
 private:
 
@@ -31,6 +31,8 @@ private:
 		Text text;
 	};
 	std::vector<StoreButton*> machines;
+	void (*machineBuyCbk)(MACHINES, void*) = nullptr;
+	void* machineBuyCbkData = nullptr;
 
 	static void gearCbk(Button&, void*);
 	static void machineCbk(Button&, void*);

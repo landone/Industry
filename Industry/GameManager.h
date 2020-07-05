@@ -24,6 +24,10 @@ public:
 
 private:
 
+	static void onMachinePurchase(MACHINES, void*);
+
+	bool purchase(long long);
+
 	bool onMouseMotion(double, double) override;
 	bool onMousePress(int button, int x, int y) override;
 	bool onMouseRelease(int button, int x, int y) override;

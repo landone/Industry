@@ -12,6 +12,7 @@ public:
 
 	void setModel(MODELS);
 	void setVisible(bool);
+	bool isVisible() { return visible; }
 
 	MODELS getType() { return type; }
 

@@ -1,11 +1,23 @@
 #include "Machine.h"
 
 const std::string Machine::MACHINE_NAMES[MAX_MACHINES] = {
-	"Boiler"
+	"Boiler",
+	"Steam Engine"
 };
 
 const std::string Machine::MACHINE_DESC[MAX_MACHINES] = {
-	"Generates electricity"
+	"Boils water into steam",
+	"Converts steam to electrical energy"
+};
+
+const MODELS Machine::MACHINE_MODELS[MAX_MACHINES] = {
+	MODELS::MODEL_BOILER,
+	MODELS::MODEL_BOILER
+};
+
+const long long Machine::MACHINE_PRICES[MAX_MACHINES] = {
+	1000,
+	2500
 };
 
 Machine::Machine(MACHINES type) {
@@ -31,5 +43,25 @@ std::string Machine::getDescription(MACHINES type) {
 	}
 
 	return MACHINE_DESC[type];
+
+}
+
+MODELS Machine::getModel(MACHINES type) {
+
+	if (type < 0 || type >= MAX_MACHINES) {
+		return (MODELS)0;
+	}
+
+	return MACHINE_MODELS[type];
+
+}
+
+long long Machine::getPrice(MACHINES type) {
+
+	if (type < 0 || type >= MAX_MACHINES) {
+		return 0;
+	}
+
+	return MACHINE_PRICES[type];
 
 }
