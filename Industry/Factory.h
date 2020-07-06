@@ -8,20 +8,27 @@ public:
 
 	Factory();
 
+	/* Get list of machines allowed in this factory */
 	const std::vector<MACHINES>& getMachineTypes() { return machineTypes; }
+	/* Raycast to position selector */
 	void raycast(glm::vec3 orig, glm::vec3 dir);
+	/* Attempt to put machine on selected space */
+	bool putMachine(MACHINES);
+	/* Attempt to remove selected machine */
+	bool removeMachine();
 
 private:
 
 	/* Building range boundary data */
 	struct BuildRange {
-		float height;
-		int min[2];//(x,z)
-		int max[2];//(x,z)
+		int dim[2]; //Dimensions (x,z)
+		int pos[3]; //Position (x,y,z)
+		Machine** machines;
 	};
 
 	Model mdl;
 	Model selector;
+	int selectedRange = -1;
 
 	std::vector<BuildRange> ranges;
 	std::vector<MACHINES> machineTypes;

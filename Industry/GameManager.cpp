@@ -24,6 +24,9 @@ void GameManager::onMachinePurchase(MACHINES type, void* data) {
 	if (self.purchase(price)) {
 
 		std::cout << "Bought machine type: " << Machine::getName(type) << std::endl;
+		if (!self.factory.putMachine(type)) {
+			std::cout << "Unable to place machine\n";
+		}
 
 	}
 	else {

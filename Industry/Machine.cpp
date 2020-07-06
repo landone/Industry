@@ -12,7 +12,7 @@ const std::string Machine::MACHINE_DESC[MAX_MACHINES] = {
 
 const MODELS Machine::MACHINE_MODELS[MAX_MACHINES] = {
 	MODELS::MODEL_BOILER,
-	MODELS::MODEL_BOILER
+	MODELS::MODEL_PIPE
 };
 
 const long long Machine::MACHINE_PRICES[MAX_MACHINES] = {
@@ -23,6 +23,7 @@ const long long Machine::MACHINE_PRICES[MAX_MACHINES] = {
 Machine::Machine(MACHINES type) {
 
 	this->type = type;
+	model.setModel(Machine::getModel(type));
 
 }
 
