@@ -26,7 +26,7 @@ private:
 	Button gear;
 
 	struct StoreButton {
-		MACHINES index;
+		MACHINES index = MACHINES::MACHINE_BOILER;
 		Button button;
 		Text text;
 	};

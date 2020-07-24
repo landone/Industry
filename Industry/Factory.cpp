@@ -15,7 +15,7 @@ Factory::Factory() {
 
 	int area = range.dim[0] * range.dim[1];
 	range.machines = new Machine*[area];
-	for (unsigned int i = 0; i < area; i++) {
+	for (int i = 0; i < area; i++) {
 		range.machines[i] = nullptr;
 	}
 	ranges.push_back(range);
@@ -71,7 +71,7 @@ bool Factory::putMachine(MACHINES type) {
 
 	Machine& mach = *(new Machine(type));
 	range.machines[index] = &mach;
-	mach.getModel().setPos(selectPos);
+	mach.getModel().setPos(selectPos - glm::vec3(1,0,0));
 
 	return true;
 

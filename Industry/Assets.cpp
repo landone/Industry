@@ -54,7 +54,7 @@ void Assets::LoadTextures() {
 
 void Assets::mesh(MODELS type, Mesh& dest) {
 
-	if ((int)type > 0 && type < MAX_MODELS) {
+	if ((int)type >= 0 && type < MAX_MODELS) {
 		dest.copy(meshes[type]);
 	}
 

@@ -1,7 +1,8 @@
 #include "Text.h"
 #include "BasicShader.h"
 
-#define DEFAULT_FONT		("textures/fonts/ascii.png")
+#define DEFAULT_FONT			("textures/fonts/ascii.png")
+static const float DIMENSION_RATIO = 2.0f / 3.0f;
 
 Text::Text() {
 
@@ -36,7 +37,7 @@ Text::~Text() {
 void Text::setFontSize(float h) {
 
 	setRelSize(0, 0);
-	setAbsSize(text.length() * h, h);
+	setAbsSize(text.length() * h * DIMENSION_RATIO, h);
 	fontSz = h;
 
 }
@@ -64,8 +65,8 @@ void Text::createTexture() {
 	/* Prepare texture dimensions */
 	/* Assume ascii 16*16 character map */
 	int len = (int)text.length();
-	float width = fontTex.getDimensions().x / 8.0f * len;
-	float height = fontTex.getDimensions().y / 8.0f;
+	float width = fontTex.getDimensions().x / 16.0f * len;
+	float height = fontTex.getDimensions().y / 16.0f;
 	shader.updateDimensions((int)width, (int)height);
 	fontTex.bind();
 

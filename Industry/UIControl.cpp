@@ -74,7 +74,7 @@ void UIControl::setMachines(const std::vector<MACHINES>& list, void(*callback)(M
 		b.setTexture(TEXTURES::TEXTURE_GEAR);
 		b.setVisibility(visible);
 		b.setRelPos(-1, -1);
-		b.setAbsPos(128 + i * 96, 16);
+		b.setAbsPos(128 + (float)i * 96, 16);
 		b.setRelSize(0, 0);
 		b.setAbsSize(64, 64);
 		b.setCallback(machineCbk, this);
@@ -156,7 +156,7 @@ void UIControl::setMoney(long long amt) {
 	if (symbol != '\0') {
 		if (remain.size() > 0 && remain != "0") {
 			output += ".";
-			for (int i = remain.size(); i < 3; i++) {
+			for (size_t i = remain.size(); i < 3; i++) {
 				output += "0";
 			}
 			output += remain;
