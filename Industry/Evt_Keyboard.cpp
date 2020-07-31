@@ -55,6 +55,18 @@ KEY Evt_Keyboard::keyCodeToEnum(SDL_Keycode code) {
 		return KEY_S;
 	case SDLK_d:
 		return KEY_D;
+	case SDLK_UP:
+		return KEY_UP;
+	case SDLK_LEFT:
+		return KEY_LEFT;
+	case SDLK_DOWN:
+		return KEY_DOWN;
+	case SDLK_RIGHT:
+		return KEY_RIGHT;
+	case SDLK_EQUALS:
+		return KEY_EQUAL;
+	case SDLK_MINUS:
+		return KEY_MINUS;
 	case SDLK_SPACE:
 		return KEY_SPACE;
 	case SDLK_LSHIFT:

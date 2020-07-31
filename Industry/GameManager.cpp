@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include "Evt_Keyboard.h"
 #include <iostream>
 
 static const long long START_MONEY = 10000;
@@ -45,6 +46,31 @@ bool GameManager::purchase(long long amt) {
 	uiControl.setMoney(money);
 
 	return true;
+
+}
+
+void GameManager::onFrame(double delta) {
+
+	if (Evt_Keyboard::isKeyDown(KEY::KEY_DOWN)) {
+		cam.rotate(glm::vec3(-arrowRotateStrength * delta, 0, 0));
+	}
+	else if (Evt_Keyboard::isKeyDown(KEY::KEY_UP)) {
+		cam.rotate(glm::vec3(arrowRotateStrength * delta, 0, 0));
+	}
+
+	if (Evt_Keyboard::isKeyDown(KEY::KEY_RIGHT)) {
+		cam.rotate(glm::vec3(0, arrowRotateStrength * delta, 0));
+	}
+	else if (Evt_Keyboard::isKeyDown(KEY::KEY_LEFT)) {
+		cam.rotate(glm::vec3(0, -arrowRotateStrength * delta, 0));
+	}
+
+	if (Evt_Keyboard::isKeyDown(KEY::KEY_EQUAL)) {
+		cam.setOffset(cam.getOffset() - arrowZoomStrength * delta);
+	}
+	else if (Evt_Keyboard::isKeyDown(KEY::KEY_MINUS)) {
+		cam.setOffset(cam.getOffset() + arrowZoomStrength * delta);
+	}
 
 }
 

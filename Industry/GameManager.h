@@ -2,12 +2,13 @@
 
 #include "Camera.h"
 #include "Evt_Mouse.h"
+#include "Evt_Display.h"
 #include "Display.h"
 #include "Model.h"
 #include "Factory.h"
 #include "UIControl.h"
 
-class GameManager : public MouseListener {
+class GameManager : public MouseListener, public DisplayListener {
 public:
 
 	GameManager();
@@ -33,6 +34,8 @@ private:
 	bool onMouseRelease(int button, int x, int y) override;
 	bool onMouseWheel(double) override;
 
+	virtual void onFrame(double delta) override;
+
 	UIControl uiControl;
 	Factory factory;
 
@@ -42,6 +45,8 @@ private:
 	Camera cam;
 	Camera guiCam;
 	float sensitivity = 0.004f;
+	float arrowRotateStrength = 1.0f;
+	float arrowZoomStrength = 10.0f;
 	bool middleMouse = false;
 
 };
