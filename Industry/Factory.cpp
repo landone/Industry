@@ -25,8 +25,8 @@ Factory::Factory() {
 
 	machineTypes.push_back(MACHINES::MACHINE_BOILER);
 	machineTypes.push_back(MACHINES::MACHINE_BOILER);
-	machineTypes.push_back(MACHINES::MACHINE_STEAM_ENGINE);
-	machineTypes.push_back(MACHINES::MACHINE_STEAM_ENGINE);
+	machineTypes.push_back(MACHINES::MACHINE_PIPE);
+	machineTypes.push_back(MACHINES::MACHINE_PIPE);
 
 }
 
@@ -53,6 +53,25 @@ bool Factory::removeMachine() {
 
 }
 
+Machine* Factory::getSelection(int* resultIndex) {
+
+	/* If no selection made */
+	if (selectedRange == -1 || !selector.isVisible()) {
+		return nullptr;
+	}
+
+	BuildRange& range = ranges[selectedRange];
+	glm::vec3 selectPos = selector.getPos();
+	int index = ((int)selectPos.x - range.pos[0]) + ((int)selectPos.z - range.pos[2]) * range.dim[0];
+
+	if (resultIndex) {
+		(*resultIndex) = index;
+	}
+
+	return range.machines[index];
+
+}
+
 bool Factory::putMachine(MACHINES type) {
 
 	/* If no selection made */
@@ -60,18 +79,15 @@ bool Factory::putMachine(MACHINES type) {
 		return false;
 	}
 
-	BuildRange& range = ranges[selectedRange];
-	glm::vec3 selectPos = selector.getPos();
-	int index = ((int)selectPos.x - range.pos[0]) + ((int)selectPos.z - range.pos[2]) * range.dim[0];
-
-	/* Machine already in place */
-	if (range.machines[index] != nullptr) {
+	int index = 0;
+	/* Machine already in-place */
+	if (getSelection(&index) != nullptr) {
 		return false;
 	}
 
 	Machine& mach = *(new Machine(type));
-	range.machines[index] = &mach;
-	mach.getModel().setPos(selectPos - glm::vec3(1,0,0));
+	ranges[selectedRange].machines[index] = &mach;
+	mach.getModel().setPos(selector.getPos() - glm::vec3(1,0,0));
 
 	return true;
 

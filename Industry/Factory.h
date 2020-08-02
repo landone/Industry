@@ -10,12 +10,17 @@ public:
 
 	/* Get list of machines allowed in this factory */
 	const std::vector<MACHINES>& getMachineTypes() { return machineTypes; }
-	/* Raycast to position selector */
+	/* Raycast to position selector. */
 	void raycast(glm::vec3 orig, glm::vec3 dir);
 	/* Attempt to put machine on selected space */
 	bool putMachine(MACHINES);
 	/* Attempt to remove selected machine */
 	bool removeMachine();
+	/*
+	Return pointer to selected machine.
+	Possibly null pointer.
+	*/
+	Machine* getSelection(int* index = nullptr);
 
 private:
 

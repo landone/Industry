@@ -1,23 +1,27 @@
 #include "Machine.h"
 
 const std::string Machine::MACHINE_NAMES[MAX_MACHINES] = {
+	"None",
 	"Boiler",
-	"Steam Engine"
+	"Pipe"
 };
 
 const std::string Machine::MACHINE_DESC[MAX_MACHINES] = {
+	"None",
 	"Boils water into steam",
-	"Converts steam to electrical energy"
+	"Transports materials"
 };
 
 const MODELS Machine::MACHINE_MODELS[MAX_MACHINES] = {
+	MODELS::MODEL_PIPE,
 	MODELS::MODEL_BOILER,
 	MODELS::MODEL_PIPE
 };
 
 const long long Machine::MACHINE_PRICES[MAX_MACHINES] = {
+	1,
 	1000,
-	2500
+	200
 };
 
 Machine::Machine(MACHINES type) {

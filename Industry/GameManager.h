@@ -26,6 +26,7 @@ public:
 private:
 
 	static void onMachinePurchase(MACHINES, void*);
+	static void onMachineSell(void*);
 
 	bool purchase(long long);
 

@@ -4,7 +4,7 @@
 
 static const long long START_MONEY = 10000;
 
-GameManager::GameManager() {
+GameManager::GameManager() : uiControl(this) {
 
 	cam.setOffset(8.0f);
 	cam.rotate(glm::vec3(PI / 4.0f, 0, 0));
@@ -13,7 +13,8 @@ GameManager::GameManager() {
 	display = Display::getGlobal();
 	money = START_MONEY;
 	uiControl.setMoney(money);
-	uiControl.setMachines(factory.getMachineTypes(), onMachinePurchase, this);
+	uiControl.setMachines(factory.getMachineTypes(), onMachinePurchase);
+	uiControl.setSellCbk(onMachineSell);
 
 }
 
@@ -25,7 +26,10 @@ void GameManager::onMachinePurchase(MACHINES type, void* data) {
 	if (self.purchase(price)) {
 
 		std::cout << "Bought machine type: " << Machine::getName(type) << std::endl;
-		if (!self.factory.putMachine(type)) {
+		if (self.factory.putMachine(type)) {
+			self.uiControl.showSelection(type);
+		}
+		else {
 			std::cout << "Unable to place machine\n";
 		}
 
@@ -33,6 +37,14 @@ void GameManager::onMachinePurchase(MACHINES type, void* data) {
 	else {
 		std::cout << "Unable to purchase machine" << std::endl;
 	}
+
+}
+
+void GameManager::onMachineSell(void* data) {
+
+	GameManager& self = *((GameManager*)data);
+
+	std::cout << "Attempted to sell machine " << self.factory.getSelection()->getName() << std::endl;
 
 }
 
@@ -93,6 +105,13 @@ bool GameManager::onMousePress(int button, int x, int y) {
 		/* Ray coming from camera */
 		glm::vec3 ray = glm::normalize(glm::vec3(glm::inverse(cam.getViewMatrix()) * pt));
 		factory.raycast(cam.getOffsetPos(), ray);
+		Machine* selection = factory.getSelection();
+		if (selection) {
+			uiControl.showSelection(selection->getType());
+		}
+		else {
+			uiControl.showSelection(MACHINE_NONE);
+		}
 	}
 	else if (button == 1) {
 		middleMouse = true;

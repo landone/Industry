@@ -1,7 +1,9 @@
 #include "UIControl.h"
 #include <iostream>
 
-UIControl::UIControl() {
+UIControl::UIControl(void* gameManager) {
+
+	gameManagerPtr = gameManager;
 
 	rateTab.setTexture(TEXTURE_UI);
 	rateTab.setTiled(true);
@@ -50,12 +52,30 @@ UIControl::UIControl() {
 	gear.setAbsSize(32, 32);
 	gear.setCallback(gearCbk, this);
 
+	selectMachine.button.setVisibility(false);
+	selectMachine.button.setRelPos(-1, -1);
+	selectMachine.button.setAbsPos(128, 16);
+	selectMachine.button.setRelSize(0, 0);
+	selectMachine.button.setAbsSize(64, 64);
+	selectMachine.button.setCallback(sellCbk, this);
+
+	selectMachine.text.setVisibility(false);
+	selectMachine.text.setRelPos(-1, -1);
+	selectMachine.text.setAbsPos(selectMachine.button.getAbsPos() - glm::vec2(0, 16));
+	selectMachine.text.setRelSize(0, 0);
+	selectMachine.text.setFontSize(12);
+
+	selectMachineDesc.setVisibility(false);
+	selectMachineDesc.setRelPos(-1, -1);
+	selectMachineDesc.setAbsPos(200, 32);
+	selectMachineDesc.setRelSize(0, 0);
+	selectMachineDesc.setFontSize(14);
+
 }
 
-void UIControl::setMachines(const std::vector<MACHINES>& list, void(*callback)(MACHINES, void*), void* data) {
+void UIControl::setMachines(const std::vector<MACHINES>& list, void(*callback)(MACHINES, void*)) {
 
 	machineBuyCbk = callback;
-	machineBuyCbkData = data;
 
 	for (unsigned int i = 0; i < machines.size(); i++) {
 		delete machines[i];
@@ -90,16 +110,66 @@ void UIControl::setMachines(const std::vector<MACHINES>& list, void(*callback)(M
 
 }
 
+void UIControl::showSelection(MACHINES mach) {
+
+	selectMachine.index = mach;
+
+	if (mach == MACHINE_NONE) {
+		isSelectMenu = false;
+	}
+	else {
+		isSelectMenu = true;
+		selectMachine.button.setTexture(TEXTURES::TEXTURE_GEAR);
+		selectMachine.text.setText(Machine::getName(mach));
+		selectMachineDesc.setText(Machine::getDescription(mach));
+	}
+
+	updateMenu();
+
+}
+
+void UIControl::setSellCbk(void(*f)(void*)) {
+
+	machineSellCbk = f;
+
+}
+
+void UIControl::sellCbk(Button& button, void* data) {
+
+	UIControl& self = (*(UIControl*)data);
+
+	if (!self.machineSellCbk) {
+		return;
+	}
+
+	self.machineSellCbk(self.gameManagerPtr);
+
+}
+
+void UIControl::updateMenu() {
+
+	bool isVis = menu.getVisibility();
+	bool showSelect = isVis && isSelectMenu;
+	bool showShop = isVis && !isSelectMenu;
+
+	selectMachine.button.setVisibility(showSelect);
+	selectMachine.text.setVisibility(showSelect);
+	selectMachineDesc.setVisibility(showSelect);
+
+	for (int i = 0; i < machines.size(); i++) {
+		machines[i]->button.setVisibility(showShop);
+		machines[i]->text.setVisibility(showShop);
+	}
+
+}
+
 void UIControl::gearCbk(Button& button, void* data) {
 
 	UIControl& self = (*(UIControl*)data);
 	bool toVis = !self.menu.getVisibility();
 	self.menu.setVisibility(toVis);
 
-	for (int i = 0; i < self.machines.size(); i++) {
-		self.machines[i]->button.setVisibility(toVis);
-		self.machines[i]->text.setVisibility(toVis);
-	}
+	self.updateMenu();
 
 }
 
@@ -113,7 +183,7 @@ void UIControl::machineCbk(Button& button, void* data) {
 
 	for (unsigned int i = 0; i < self.machines.size(); i++) {
 		if ((&button) == &self.machines[i]->button) {
-			self.machineBuyCbk(self.machines[i]->index, self.machineBuyCbkData);
+			self.machineBuyCbk(self.machines[i]->index, self.gameManagerPtr);
 			break;
 		}
 	}
